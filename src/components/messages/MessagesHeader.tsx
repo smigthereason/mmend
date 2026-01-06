@@ -55,15 +55,15 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
+  flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    paddingTop: 45,
+    paddingHorizontal: 16,
+    paddingTop: 55,
+    paddingBottom: 16,
     backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "#eeeeee9d",
   },
   headerTitle: {
     fontSize: 24,

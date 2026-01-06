@@ -5,15 +5,45 @@ export interface Story {
   image: string;
 }
 
+export interface Message {
+  id: string;
+  text: string;
+  time: string;
+  isSent: boolean;
+  isRead: boolean;
+}
+
+export interface Conversation {
+  id: string;
+  userName: string;
+  userImage: string;
+  lastMessage: string;
+  timestamp: string;
+  unreadCount: number;
+  isOnline: boolean;
+  messageThread: Message[];
+}
+
 export interface Post {
   id: string;
+  userId: string;
+  userName: string;
   username: string;
   userImage: string;
-  postImage: string;
-  likes: number;
+  title: string;
+  content: string;
   caption: string;
+  category: 'Postpartum' | 'Breastfeeding' | 'Sleep' | 'Mental Health' | 'Recovery' | 'Support';
+  likes: number;
   comments: number;
+  shares: number;
+  isLiked: boolean;
+  isSaved: boolean;
+  tags: string[];
+  timestamp: string;
   time: string;
+  readTime: string;
+  postImage: string;
 }
 
 export interface PostHeaderProps {
@@ -29,25 +59,6 @@ export interface StoryItemProps {
 export interface PostItemProps {
   post: Post;
 }
-// Add these to your existing types.ts
-export interface Message {
-  id: string;
-  text: string;
-  time: string;
-  isSent: boolean;
-  isRead: boolean;
-}
-
-export interface Conversation {
-  id: string;
-  userName: string;
-  userImage: string;
-  lastMessage: string;
-  timestamp: string;
-  unreadCount: number;
-  isOnline: boolean;
-  messageThread: Message[];
-}
 
 export interface MessageItemProps {
   conversation: Conversation;
@@ -69,73 +80,5 @@ export interface ChatInputProps {
   value: string;
   onChangeText: (text: string) => void;
   onSendPress: () => void;
-}
-
-export interface Message {
-  id: string;
-  text: string;
-  time: string;
-  isSent: boolean;
-  isRead: boolean;
-}
-
-export interface Conversation {
-  id: string;
-  userName: string;
-  userImage: string;
-  lastMessage: string;
-  timestamp: string;
-  unreadCount: number;
-  isOnline: boolean;
-  messageThread: Message[];
-}
-
-export interface ChatHeaderProps {
-  userName: string;
-  userImage: string;
-  isOnline: boolean;
-  onBackPress: () => void;
-}
-
-export interface ChatInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onSendPress: () => void;
-}
-
-export interface MessageBubbleProps {
-  message: Message;
-}
-
-export interface MessageItemProps {
-  conversation: Conversation;
-  onPress: (conversation: Conversation) => void;
-}
-export interface ChatInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onSendPress: () => void;
-  onContentSizeChange?: (event: any) => void; // Add this
-}
-// Add these interfaces if they don't exist
-export interface ChatHeaderProps {
-  userName: string;
-  userImage: string;
-  isOnline: boolean;
-  onBackPress: () => void;
-}
-
-export interface ChatInputProps {
-  value: string;
-  onChangeText: (text: string) => void;
-  onSendPress: () => void;
-}
-
-export interface MessageBubbleProps {
-  message: Message;
-}
-
-export interface MessageItemProps {
-  conversation: Conversation;
-  onPress: (conversation: Conversation) => void;
+  onContentSizeChange?: (event: any) => void;
 }

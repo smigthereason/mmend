@@ -60,12 +60,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    paddingTop: 45,
+    paddingHorizontal: 16,
+    paddingTop: 55,
+    paddingBottom: 16,
+    backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: "#eeeeee9d",
-    backgroundColor: "white",
+
   },
   logoImage: {
     height: 40,
