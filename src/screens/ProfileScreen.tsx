@@ -1,3 +1,4 @@
+// ProfileScreen.tsx - Fixed version with correct theme implementation
 import React, { useState } from "react";
 import {
   View,
@@ -19,7 +20,7 @@ const ProfileScreen: React.FC = () => {
   const [points, setPoints] = useState(userProfile.points);
   const [activeTab, setActiveTab] = useState("posts");
   const navigation = useNavigation();
-  const { colors, isDarkMode } = useTheme();
+  const { colors } = useTheme();
   const userPosts = postsData.filter((post) => post.userId === userProfile.id);
 
   const handleAddPress = () => {
@@ -31,8 +32,8 @@ const ProfileScreen: React.FC = () => {
     navigation.navigate("AccountSettings" as never);
   };
 
-  const renderBadge = ({ item }) => (
-    <View style={[styles.badgeItem, { backgroundColor: colors.surface }]}>
+  const renderBadge = ({ item }: { item: any }) => (
+    <View style={[styles.badgeItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View
         style={[styles.badgeIcon, { backgroundColor: colors.primary + "20" }]}
       >
@@ -54,8 +55,8 @@ const ProfileScreen: React.FC = () => {
     </View>
   );
 
-  const renderActivity = ({ item }) => (
-    <View style={[styles.activityItem, { backgroundColor: colors.surface }]}>
+  const renderActivity = ({ item }: { item: any }) => (
+    <View style={[styles.activityItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View
         style={[
           styles.activityIcon,
@@ -94,8 +95,8 @@ const ProfileScreen: React.FC = () => {
     </View>
   );
 
-  const renderPost = ({ item }) => (
-    <View style={[styles.postItem, { backgroundColor: colors.surface }]}>
+  const renderPost = ({ item }: { item: any }) => (
+    <View style={[styles.postItem, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Text style={[styles.postTitle, { color: colors.text }]}>
         {item.title}
       </Text>
@@ -140,273 +141,14 @@ const ProfileScreen: React.FC = () => {
     </View>
   );
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.background,
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingHorizontal: 16,
-      paddingTop: 55,
-      paddingBottom: 16,
-      backgroundColor: "white",
-      borderBottomWidth: 1,
-      borderBottomColor: "#eeeeee9d",
-    },
-    headerTitle: {
-      fontSize: 24,
-      fontWeight: "bold",
-      color: colors.text,
-    },
-    menuButton: {
-      padding: 4,
-    },
-    profileHeader: {
-      flexDirection: "row",
-      padding: 20,
-      backgroundColor: colors.surface,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    profileImage: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
-      marginRight: 20,
-    },
-    profileInfo: {
-      flex: 1,
-    },
-    profileName: {
-      fontSize: 24,
-      fontWeight: "bold",
-      color: colors.text,
-      marginBottom: 8,
-    },
-    profileBio: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      marginBottom: 12,
-      lineHeight: 20,
-    },
-    locationRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginBottom: 8,
-    },
-    locationText: {
-      fontSize: 14,
-      color: colors.textSecondary,
-      marginLeft: 4,
-    },
-    babyInfo: {
-      backgroundColor: colors.primary + "20",
-      paddingHorizontal: 12,
-      paddingVertical: 6,
-      borderRadius: 16,
-      alignSelf: "flex-start",
-      borderWidth: 1,
-      borderColor: colors.primary,
-    },
-    babyText: {
-      fontSize: 14,
-      color: colors.primary,
-      fontWeight: "500",
-    },
-    statsContainer: {
-      flexDirection: "row",
-      backgroundColor: colors.surface,
-      paddingVertical: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    statCard: {
-      flex: 1,
-      alignItems: "center",
-    },
-    statNumber: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: colors.primary,
-      marginBottom: 4,
-    },
-    statLabel: {
-      fontSize: 12,
-      color: colors.textSecondary,
-    },
-    tabsContainer: {
-      flexDirection: "row",
-      backgroundColor: colors.surface,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    tab: {
-      flex: 1,
-      alignItems: "center",
-      paddingVertical: 16,
-    },
-    tabActive: {
-      borderBottomWidth: 2,
-      borderBottomColor: colors.primary,
-    },
-    tabText: {
-      fontSize: 16,
-      color: colors.textSecondary,
-    },
-    tabTextActive: {
-      color: colors.primary,
-      fontWeight: "600",
-    },
-    contentSection: {
-      backgroundColor: colors.surface,
-      padding: 20,
-      minHeight: 300,
-    },
-    emptyText: {
-      textAlign: "center",
-      color: colors.textMuted,
-      fontSize: 16,
-      marginTop: 50,
-    },
-    postItem: {
-      backgroundColor: colors.background,
-      padding: 16,
-      borderRadius: 12,
-      marginBottom: 12,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    postTitle: {
-      fontSize: 16,
-      fontWeight: "bold",
-      marginBottom: 8,
-    },
-    postContent: {
-      fontSize: 14,
-      lineHeight: 20,
-      marginBottom: 12,
-    },
-    postStats: {
-      flexDirection: "row",
-    },
-    statItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginRight: 20,
-    },
-    statText: {
-      fontSize: 14,
-      marginLeft: 4,
-    },
-    badgeItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: colors.background,
-      padding: 16,
-      borderRadius: 12,
-      marginBottom: 12,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    badgeIcon: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      justifyContent: "center",
-      alignItems: "center",
-      marginRight: 16,
-    },
-    badgeIconText: {
-      fontSize: 20,
-    },
-    badgeInfo: {
-      flex: 1,
-    },
-    badgeName: {
-      fontSize: 16,
-      fontWeight: "bold",
-      marginBottom: 4,
-    },
-    badgeDescription: {
-      fontSize: 14,
-      marginBottom: 4,
-    },
-    badgeDate: {
-      fontSize: 12,
-    },
-    activityItem: {
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: colors.background,
-      padding: 16,
-      borderRadius: 12,
-      marginBottom: 12,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    activityIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      justifyContent: "center",
-      alignItems: "center",
-      marginRight: 16,
-    },
-    activityInfo: {
-      flex: 1,
-    },
-    activityTitle: {
-      fontSize: 16,
-      fontWeight: "500",
-      marginBottom: 4,
-    },
-    activityDescription: {
-      fontSize: 14,
-      marginBottom: 4,
-    },
-    activityTime: {
-      fontSize: 12,
-    },
-    interestsSection: {
-      backgroundColor: colors.surface,
-      padding: 20,
-      marginTop: 12,
-    },
-    sectionTitle: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: colors.text,
-      marginBottom: 16,
-    },
-    interestsContainer: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-    },
-    interestChip: {
-      backgroundColor: colors.primary + "20",
-      paddingHorizontal: 16,
-      paddingVertical: 8,
-      borderRadius: 20,
-      marginRight: 8,
-      marginBottom: 8,
-      borderWidth: 1,
-      borderColor: colors.primary,
-    },
-    interestText: {
-      fontSize: 14,
-      color: colors.primary,
-      fontWeight: "500",
-    },
-  });
-
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header with Profile title and hamburger menu */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
+      <View style={[styles.header, { 
+        backgroundColor: colors.surface,
+        borderBottomColor: colors.border 
+      }]}>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Profile</Text>
         <TouchableOpacity
           style={styles.menuButton}
           onPress={navigateToAccountSettings}
@@ -415,26 +157,32 @@ const ProfileScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: colors.background }}>
         {/* Profile Header */}
-        <View style={styles.profileHeader}>
+        <View style={[styles.profileHeader, { 
+          backgroundColor: colors.surface,
+          borderBottomColor: colors.border 
+        }]}>
           <Image
             source={{ uri: userProfile.image }}
             style={styles.profileImage}
           />
           <View style={styles.profileInfo}>
-            <Text style={styles.profileName}>{userProfile.name}</Text>
-            <Text style={styles.profileBio}>{userProfile.bio}</Text>
+            <Text style={[styles.profileName, { color: colors.text }]}>{userProfile.name}</Text>
+            <Text style={[styles.profileBio, { color: colors.textSecondary }]}>{userProfile.bio}</Text>
             <View style={styles.locationRow}>
               <Ionicons
                 name="location-outline"
                 size={16}
                 color={colors.textSecondary}
               />
-              <Text style={styles.locationText}>{userProfile.location}</Text>
+              <Text style={[styles.locationText, { color: colors.textSecondary }]}>{userProfile.location}</Text>
             </View>
-            <View style={styles.babyInfo}>
-              <Text style={styles.babyText}>
+            <View style={[styles.babyInfo, { 
+              backgroundColor: colors.primary + "20",
+              borderColor: colors.primary 
+            }]}>
+              <Text style={[styles.babyText, { color: colors.primary }]}>
                 👶 {userProfile.babyName}, {userProfile.babyAge}
               </Text>
             </View>
@@ -442,69 +190,78 @@ const ProfileScreen: React.FC = () => {
         </View>
 
         {/* Stats */}
-        <View style={styles.statsContainer}>
+        <View style={[styles.statsContainer, { 
+          backgroundColor: colors.surface,
+          borderBottomColor: colors.border 
+        }]}>
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>{userProfile.stats.posts}</Text>
-            <Text style={styles.statLabel}>Posts</Text>
+            <Text style={[styles.statNumber, { color: colors.primary }]}>{userProfile.stats.posts}</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Posts</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>{userProfile.stats.comments}</Text>
-            <Text style={styles.statLabel}>Comments</Text>
+            <Text style={[styles.statNumber, { color: colors.primary }]}>{userProfile.stats.comments}</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Comments</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>
+            <Text style={[styles.statNumber, { color: colors.primary }]}>
               {userProfile.stats.likesReceived}
             </Text>
-            <Text style={styles.statLabel}>Likes</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Likes</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>
+            <Text style={[styles.statNumber, { color: colors.primary }]}>
               {userProfile.stats.helpedOthers}
             </Text>
-            <Text style={styles.statLabel}>Helped</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Helped</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statNumber}>{userProfile.stats.streak}</Text>
-            <Text style={styles.statLabel}>Day Streak</Text>
+            <Text style={[styles.statNumber, { color: colors.primary }]}>{userProfile.stats.streak}</Text>
+            <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Day Streak</Text>
           </View>
         </View>
 
         {/* Tabs */}
-        <View style={styles.tabsContainer}>
+        <View style={[styles.tabsContainer, { 
+          backgroundColor: colors.surface,
+          borderBottomColor: colors.border 
+        }]}>
           <TouchableOpacity
-            style={[styles.tab, activeTab === "posts" && styles.tabActive]}
+            style={[styles.tab, activeTab === "posts" && [styles.tabActive, { borderBottomColor: colors.primary }]]}
             onPress={() => setActiveTab("posts")}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === "posts" && styles.tabTextActive,
+                { color: colors.textSecondary },
+                activeTab === "posts" && [styles.tabTextActive, { color: colors.primary }]
               ]}
             >
               My Posts
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.tab, activeTab === "badges" && styles.tabActive]}
+            style={[styles.tab, activeTab === "badges" && [styles.tabActive, { borderBottomColor: colors.primary }]]}
             onPress={() => setActiveTab("badges")}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === "badges" && styles.tabTextActive,
+                { color: colors.textSecondary },
+                activeTab === "badges" && [styles.tabTextActive, { color: colors.primary }]
               ]}
             >
               Badges
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.tab, activeTab === "activity" && styles.tabActive]}
+            style={[styles.tab, activeTab === "activity" && [styles.tabActive, { borderBottomColor: colors.primary }]]}
             onPress={() => setActiveTab("activity")}
           >
             <Text
               style={[
                 styles.tabText,
-                activeTab === "activity" && styles.tabTextActive,
+                { color: colors.textSecondary },
+                activeTab === "activity" && [styles.tabTextActive, { color: colors.primary }]
               ]}
             >
               Activity
@@ -514,7 +271,7 @@ const ProfileScreen: React.FC = () => {
 
         {/* Content based on active tab */}
         {activeTab === "posts" && (
-          <View style={styles.contentSection}>
+          <View style={[styles.contentSection, { backgroundColor: colors.surface }]}>
             {userPosts.length > 0 ? (
               <FlatList
                 data={userPosts}
@@ -523,13 +280,13 @@ const ProfileScreen: React.FC = () => {
                 scrollEnabled={false}
               />
             ) : (
-              <Text style={styles.emptyText}>No posts yet</Text>
+              <Text style={[styles.emptyText, { color: colors.textMuted }]}>No posts yet</Text>
             )}
           </View>
         )}
 
         {activeTab === "badges" && (
-          <View style={styles.contentSection}>
+          <View style={[styles.contentSection, { backgroundColor: colors.surface }]}>
             <FlatList
               data={userProfile.badges}
               renderItem={renderBadge}
@@ -540,7 +297,7 @@ const ProfileScreen: React.FC = () => {
         )}
 
         {activeTab === "activity" && (
-          <View style={styles.contentSection}>
+          <View style={[styles.contentSection, { backgroundColor: colors.surface }]}>
             <FlatList
               data={userProfile.recentActivity}
               renderItem={renderActivity}
@@ -551,12 +308,15 @@ const ProfileScreen: React.FC = () => {
         )}
 
         {/* Interests */}
-        <View style={styles.interestsSection}>
-          <Text style={styles.sectionTitle}>My Interests</Text>
+        <View style={[styles.interestsSection, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>My Interests</Text>
           <View style={styles.interestsContainer}>
             {userProfile.interests.map((interest, index) => (
-              <View key={index} style={styles.interestChip}>
-                <Text style={styles.interestText}>{interest}</Text>
+              <View key={index} style={[styles.interestChip, { 
+                backgroundColor: colors.primary + "20",
+                borderColor: colors.primary 
+              }]}>
+                <Text style={[styles.interestText, { color: colors.primary }]}>{interest}</Text>
               </View>
             ))}
           </View>
@@ -565,5 +325,233 @@ const ProfileScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingTop: 55,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  menuButton: {
+    padding: 4,
+  },
+  profileHeader: {
+    flexDirection: "row",
+    padding: 20,
+    borderBottomWidth: 1,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginRight: 20,
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  profileName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  profileBio: {
+    fontSize: 14,
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  locationText: {
+    fontSize: 14,
+    marginLeft: 4,
+  },
+  babyInfo: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    alignSelf: "flex-start",
+    borderWidth: 1,
+  },
+  babyText: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  statsContainer: {
+    flexDirection: "row",
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+  },
+  statCard: {
+    flex: 1,
+    alignItems: "center",
+  },
+  statNumber: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+  },
+  tabsContainer: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 16,
+  },
+  tabActive: {
+    borderBottomWidth: 2,
+  },
+  tabText: {
+    fontSize: 16,
+  },
+  tabTextActive: {
+    fontWeight: "600",
+  },
+  contentSection: {
+    padding: 20,
+    minHeight: 300,
+  },
+  emptyText: {
+    textAlign: "center",
+    fontSize: 16,
+    marginTop: 50,
+  },
+  postItem: {
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  postTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+  },
+  postContent: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  postStats: {
+    flexDirection: "row",
+  },
+  statItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 20,
+  },
+  statText: {
+    fontSize: 14,
+    marginLeft: 4,
+  },
+  badgeItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  badgeIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 16,
+  },
+  badgeIconText: {
+    fontSize: 20,
+  },
+  badgeInfo: {
+    flex: 1,
+  },
+  badgeName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  badgeDescription: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  badgeDate: {
+    fontSize: 12,
+  },
+  activityItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  activityIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 16,
+  },
+  activityInfo: {
+    flex: 1,
+  },
+  activityTitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 4,
+  },
+  activityDescription: {
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  activityTime: {
+    fontSize: 12,
+  },
+  interestsSection: {
+    padding: 20,
+    marginTop: 12,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  interestsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  interestChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginRight: 8,
+    marginBottom: 8,
+    borderWidth: 1,
+  },
+  interestText: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+});
 
 export default ProfileScreen;

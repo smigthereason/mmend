@@ -1,10 +1,13 @@
+// PostItem.tsx
 import React from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { PostItemProps } from "../shared/types";
 import PostHeader from "./PostHeader";
+import { useTheme } from "../../context/ThemeContext";
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
+  const { colors } = useTheme();
   const [liked, setLiked] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
   const [likeCount, setLikeCount] = React.useState(post.likes);
@@ -23,7 +26,10 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
   };
 
   return (
-    <View style={styles.postContainer}>
+    <View style={[styles.postContainer, { 
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border 
+    }]}>
       <PostHeader 
         username={post.username}
         userImage={post.userImage}
@@ -37,36 +43,38 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
           <Ionicons 
             name={liked ? "heart" : "heart-outline"} 
             size={28} 
-            color={liked ? "#ff3040" : "black"} 
+            color={liked ? "#ff3040" : colors.text} 
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionIcon}>
-          <Ionicons name="chatbubble-outline" size={26} color="black" />
+          <Ionicons name="chatbubble-outline" size={26} color={colors.text} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionIcon}>
-          <Ionicons name="paper-plane-outline" size={26} color="black" />
+          <Ionicons name="paper-plane-outline" size={26} color={colors.text} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.saveIcon} onPress={handleSave}>
           <Ionicons 
             name={saved ? "bookmark" : "bookmark-outline"} 
             size={26} 
-            color="black" 
+            color={colors.text} 
           />
         </TouchableOpacity>
       </View>
 
       <View style={styles.postContent}>
-        <Text style={styles.likes}>{likeCount.toLocaleString()} likes</Text>
-        <Text style={styles.caption}>
-          <Text style={styles.username}>{post.username} </Text>
+        <Text style={[styles.likes, { color: colors.text }]}>
+          {likeCount.toLocaleString()} likes
+        </Text>
+        <Text style={[styles.caption, { color: colors.text }]}>
+          <Text style={[styles.username, { color: colors.text }]}>{post.username} </Text>
           {post.caption}
         </Text>
         <TouchableOpacity>
-          <Text style={styles.viewComments}>
+          <Text style={[styles.viewComments, { color: colors.textSecondary }]}>
             View all {post.comments} comments
           </Text>
         </TouchableOpacity>
-        <Text style={styles.timestamp}>{post.time}</Text>
+        <Text style={[styles.timestamp, { color: colors.textMuted }]}>{post.time}</Text>
       </View>
     </View>
   );
@@ -75,9 +83,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
 const styles = StyleSheet.create({
   postContainer: {
     marginBottom: 20,
-    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
     paddingBottom: 15,
   },
   postImage: {
@@ -113,12 +119,10 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   viewComments: {
-    color: "#666",
     marginBottom: 5,
     fontSize: 14,
   },
   timestamp: {
-    color: "#999",
     fontSize: 12,
     marginTop: 5,
   },

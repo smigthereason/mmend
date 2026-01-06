@@ -13,9 +13,11 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import { useTheme } from "../context/ThemeContext";
 
 const EditProfileScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
   const [profileImage, setProfileImage] = useState<string>(
     "https://images.unsplash.com/photo-1494790108755-2616b612b786"
   );
@@ -46,6 +48,144 @@ const EditProfileScreen: React.FC = () => {
     navigation.goBack();
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingTop: 55,
+      paddingBottom: 16,
+      backgroundColor: colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    backButton: {
+      padding: 4,
+    },
+    headerTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    saveButton: {
+      fontSize: 16,
+      color: colors.primary,
+      fontWeight: "600",
+    },
+    imageSection: {
+      alignItems: "center",
+      paddingVertical: 30,
+      backgroundColor: colors.surface,
+    },
+    profileImage: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      borderWidth: 3,
+      borderColor: colors.surface,
+    },
+    editImageButton: {
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      backgroundColor: colors.primary,
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 3,
+      borderColor: colors.surface,
+    },
+    formSection: {
+      padding: 20,
+    },
+    inputGroup: {
+      marginBottom: 20,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: "500",
+      color: colors.textSecondary,
+      marginBottom: 8,
+    },
+    input: {
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      fontSize: 16,
+      color: colors.text,
+    },
+    textArea: {
+      height: 100,
+      textAlignVertical: "top",
+    },
+    babyInfoSection: {
+      marginTop: 20,
+      padding: 20,
+      backgroundColor: colors.primary + "20",
+      borderRadius: 12,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 16,
+    },
+    row: {
+      flexDirection: "row",
+    },
+    interestsSection: {
+      marginTop: 30,
+    },
+    interestsContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+    },
+    interestChip: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colors.surface,
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+      borderRadius: 20,
+      marginRight: 10,
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    interestText: {
+      fontSize: 14,
+      color: colors.primary,
+      fontWeight: "500",
+      marginRight: 6,
+    },
+    addInterestChip: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colors.surface,
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+      borderRadius: 20,
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    addInterestText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      marginLeft: 6,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -53,7 +193,7 @@ const EditProfileScreen: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#000" />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Edit Profile</Text>
         <TouchableOpacity onPress={saveProfile}>
@@ -81,6 +221,7 @@ const EditProfileScreen: React.FC = () => {
               value={name}
               onChangeText={setName}
               placeholder="Enter your name"
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
@@ -91,6 +232,7 @@ const EditProfileScreen: React.FC = () => {
               value={email}
               onChangeText={setEmail}
               placeholder="Enter your email"
+              placeholderTextColor={colors.textSecondary}
               keyboardType="email-address"
               autoCapitalize="none"
             />
@@ -103,6 +245,7 @@ const EditProfileScreen: React.FC = () => {
               value={bio}
               onChangeText={setBio}
               placeholder="Tell us about yourself"
+              placeholderTextColor={colors.textSecondary}
               multiline
               numberOfLines={3}
             />
@@ -115,6 +258,7 @@ const EditProfileScreen: React.FC = () => {
               value={location}
               onChangeText={setLocation}
               placeholder="Enter your location"
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
@@ -129,6 +273,7 @@ const EditProfileScreen: React.FC = () => {
                   value={babyName}
                   onChangeText={setBabyName}
                   placeholder="Baby's name"
+                  placeholderTextColor={colors.textSecondary}
                 />
               </View>
 
@@ -139,6 +284,7 @@ const EditProfileScreen: React.FC = () => {
                   value={babyAge}
                   onChangeText={setBabyAge}
                   placeholder="Baby's age"
+                  placeholderTextColor={colors.textSecondary}
                 />
               </View>
             </View>
@@ -156,11 +302,11 @@ const EditProfileScreen: React.FC = () => {
               ].map((interest, index) => (
                 <TouchableOpacity key={index} style={styles.interestChip}>
                   <Text style={styles.interestText}>{interest}</Text>
-                  <Ionicons name="close" size={16} color="#ff85a2" />
+                  <Ionicons name="close" size={16} color={colors.primary} />
                 </TouchableOpacity>
               ))}
               <TouchableOpacity style={styles.addInterestChip}>
-                <Ionicons name="add" size={20} color="#ff85a2" />
+                <Ionicons name="add" size={20} color={colors.primary} />
                 <Text style={styles.addInterestText}>Add Interest</Text>
               </TouchableOpacity>
             </View>
@@ -170,143 +316,5 @@ const EditProfileScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 55,
-    paddingBottom: 16,
-    backgroundColor: "white",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee9d",
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  saveButton: {
-    fontSize: 16,
-    color: "#ff85a2",
-    fontWeight: "600",
-  },
-  imageSection: {
-    alignItems: "center",
-    paddingVertical: 30,
-    backgroundColor: "#fff",
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: "#fff",
-  },
-  editImageButton: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: "#ff85a2",
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 3,
-    borderColor: "#fff",
-  },
-  formSection: {
-    padding: 20,
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#666",
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: "#000",
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-  },
-  babyInfoSection: {
-    marginTop: 20,
-    padding: 20,
-    backgroundColor: "#fff5f7",
-    borderRadius: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 16,
-  },
-  row: {
-    flexDirection: "row",
-  },
-  interestsSection: {
-    marginTop: 30,
-  },
-  interestsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  interestChip: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginRight: 10,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#ff85a2",
-  },
-  interestText: {
-    fontSize: 14,
-    color: "#ff85a2",
-    fontWeight: "500",
-    marginRight: 6,
-  },
-  addInterestChip: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 20,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-  },
-  addInterestText: {
-    fontSize: 14,
-    color: "#666",
-    marginLeft: 6,
-  },
-});
 
 export default EditProfileScreen;

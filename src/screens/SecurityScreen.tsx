@@ -12,9 +12,11 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "../context/ThemeContext";
 
 const SecurityScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -43,6 +45,162 @@ const SecurityScreen: React.FC = () => {
     setConfirmPassword("");
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingTop: 55,
+      paddingBottom: 16,
+      backgroundColor: colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    backButton: {
+      padding: 4,
+    },
+    headerTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    headerRightPlaceholder: {
+      width: 32,
+    },
+    section: {
+      backgroundColor: colors.surface,
+      marginBottom: 12,
+      padding: 20,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 20,
+    },
+    inputGroup: {
+      marginBottom: 16,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: "500",
+      color: colors.textSecondary,
+      marginBottom: 8,
+    },
+    input: {
+      backgroundColor: colors.background,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      fontSize: 16,
+      color: colors.text,
+    },
+    primaryButton: {
+      backgroundColor: colors.primary,
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: "center",
+      marginTop: 10,
+    },
+    primaryButtonText: {
+      color: "#fff",
+      fontSize: 16,
+      fontWeight: "600",
+    },
+    settingItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 20,
+    },
+    settingInfo: {
+      flex: 1,
+      marginRight: 20,
+    },
+    settingTitle: {
+      fontSize: 16,
+      fontWeight: "500",
+      color: colors.text,
+      marginBottom: 4,
+    },
+    settingDescription: {
+      fontSize: 14,
+      color: colors.textSecondary,
+    },
+    twoFactorInfo: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      backgroundColor: colors.primary + "10",
+      padding: 16,
+      borderRadius: 10,
+      marginTop: 10,
+    },
+    twoFactorText: {
+      flex: 1,
+      fontSize: 14,
+      color: colors.primary,
+      marginLeft: 12,
+    },
+    sessionItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    sessionIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.primary + "20",
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 16,
+    },
+    sessionInfo: {
+      flex: 1,
+    },
+    sessionTitle: {
+      fontSize: 16,
+      fontWeight: "500",
+      color: colors.text,
+      marginBottom: 4,
+    },
+    sessionDetails: {
+      fontSize: 14,
+      color: colors.textSecondary,
+    },
+    logoutText: {
+      color: "#ff3b30",
+      fontSize: 14,
+      fontWeight: "500",
+    },
+    secondaryButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.surface,
+      paddingVertical: 14,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: "#ff3b30",
+      margin: 20,
+    },
+    secondaryButtonText: {
+      color: "#ff3b30",
+      fontSize: 16,
+      fontWeight: "600",
+      marginLeft: 8,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -50,7 +208,7 @@ const SecurityScreen: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#000" />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Security</Text>
         <View style={styles.headerRightPlaceholder} />
@@ -68,6 +226,7 @@ const SecurityScreen: React.FC = () => {
               value={currentPassword}
               onChangeText={setCurrentPassword}
               placeholder="Enter current password"
+              placeholderTextColor={colors.textSecondary}
               secureTextEntry
             />
           </View>
@@ -79,6 +238,7 @@ const SecurityScreen: React.FC = () => {
               value={newPassword}
               onChangeText={setNewPassword}
               placeholder="Enter new password"
+              placeholderTextColor={colors.textSecondary}
               secureTextEntry
             />
           </View>
@@ -90,6 +250,7 @@ const SecurityScreen: React.FC = () => {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               placeholder="Confirm new password"
+              placeholderTextColor={colors.textSecondary}
               secureTextEntry
             />
           </View>
@@ -114,14 +275,14 @@ const SecurityScreen: React.FC = () => {
             <Switch
               value={twoFactorEnabled}
               onValueChange={setTwoFactorEnabled}
-              trackColor={{ false: "#767577", true: "#ff85a2" }}
+              trackColor={{ false: "#767577", true: colors.primary }}
               thumbColor="#fff"
             />
           </View>
 
           {twoFactorEnabled && (
             <View style={styles.twoFactorInfo}>
-              <Ionicons name="shield-checkmark" size={24} color="#4CAF50" />
+              <Ionicons name="shield-checkmark" size={24} color={colors.primary} />
               <Text style={styles.twoFactorText}>
                 Two-factor authentication is enabled. You'll need to verify your
                 identity when signing in.
@@ -142,7 +303,7 @@ const SecurityScreen: React.FC = () => {
             <Switch
               value={biometricEnabled}
               onValueChange={setBiometricEnabled}
-              trackColor={{ false: "#767577", true: "#ff85a2" }}
+              trackColor={{ false: "#767577", true: colors.primary }}
               thumbColor="#fff"
             />
           </View>
@@ -153,7 +314,7 @@ const SecurityScreen: React.FC = () => {
           <Text style={styles.sectionTitle}>Active Sessions</Text>
           <View style={styles.sessionItem}>
             <View style={styles.sessionIcon}>
-              <Ionicons name="phone-portrait" size={24} color="#ff85a2" />
+              <Ionicons name="phone-portrait" size={24} color={colors.primary} />
             </View>
             <View style={styles.sessionInfo}>
               <Text style={styles.sessionTitle}>iPhone 14 Pro</Text>
@@ -165,7 +326,7 @@ const SecurityScreen: React.FC = () => {
 
           <View style={styles.sessionItem}>
             <View style={styles.sessionIcon}>
-              <Ionicons name="tablet-portrait" size={24} color="#666" />
+              <Ionicons name="tablet-portrait" size={24} color={colors.textSecondary} />
             </View>
             <View style={styles.sessionInfo}>
               <Text style={styles.sessionTitle}>iPad Pro</Text>
@@ -188,161 +349,5 @@ const SecurityScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 55,
-    paddingBottom: 16,
-    backgroundColor: "white",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee9d",
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  headerRightPlaceholder: {
-    width: 32,
-  },
-  section: {
-    backgroundColor: "#fff",
-    marginBottom: 12,
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 20,
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#666",
-    marginBottom: 8,
-  },
-  input: {
-    backgroundColor: "#f8f9fa",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: "#000",
-  },
-  primaryButton: {
-    backgroundColor: "#ff85a2",
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  primaryButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  settingItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  settingInfo: {
-    flex: 1,
-    marginRight: 20,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#000",
-    marginBottom: 4,
-  },
-  settingDescription: {
-    fontSize: 14,
-    color: "#666",
-  },
-  twoFactorInfo: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    backgroundColor: "#f0f9f0",
-    padding: 16,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  twoFactorText: {
-    flex: 1,
-    fontSize: 14,
-    color: "#2e7d32",
-    marginLeft: 12,
-  },
-  sessionItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-  },
-  sessionIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#fff5f7",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 16,
-  },
-  sessionInfo: {
-    flex: 1,
-  },
-  sessionTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#000",
-    marginBottom: 4,
-  },
-  sessionDetails: {
-    fontSize: 14,
-    color: "#666",
-  },
-  logoutText: {
-    color: "#ff3b30",
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  secondaryButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#fff",
-    paddingVertical: 14,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ff3b30",
-    margin: 20,
-  },
-  secondaryButtonText: {
-    color: "#ff3b30",
-    fontSize: 16,
-    fontWeight: "600",
-    marginLeft: 8,
-  },
-});
 
 export default SecurityScreen;

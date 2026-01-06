@@ -1,3 +1,4 @@
+// ChatInput.tsx
 import React from "react";
 import { 
   View, 
@@ -6,32 +7,36 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Animated,
-  Keyboard,
-  TouchableWithoutFeedback
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ChatInputProps } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 const ChatInput: React.FC<ChatInputProps> = ({
   value,
   onChangeText,
   onSendPress,
 }) => {
+  const { colors } = useTheme();
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-      style={styles.keyboardAvoidingView}
+      style={[styles.keyboardAvoidingView, { backgroundColor: colors.surface }]}
     >
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, { borderTopColor: colors.border }]}>
         <TouchableOpacity style={styles.inputIcon}>
-          <Ionicons name="add-circle" size={28} color="#3897f0" />
+          <Ionicons name="add-circle" size={28} color={colors.primary} />
         </TouchableOpacity>
         
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, { 
+            backgroundColor: colors.background === '#121212' ? '#333333' : '#f0f0f0',
+            color: colors.text 
+          }]}
           placeholder="Message..."
+          placeholderTextColor={colors.textMuted}
           value={value}
           onChangeText={onChangeText}
           multiline
@@ -48,7 +53,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           <Ionicons 
             name={value.trim() ? "send" : "mic"} 
             size={24} 
-            color={value.trim() ? "#3897f0" : "#999"} 
+            color={value.trim() ? colors.primary : colors.textMuted} 
           />
         </TouchableOpacity>
       </View>
@@ -62,7 +67,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'white',
   },
   inputContainer: {
     flexDirection: "row",
@@ -70,8 +74,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingBottom: Platform.OS === 'ios' ? 20 : 10,
     borderTopWidth: 1,
-    borderTopColor: "#eee",
-    backgroundColor: 'white',
   },
   inputIcon: {
     padding: 8,
@@ -80,7 +82,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: Platform.OS === 'ios' ? 12 : 10,

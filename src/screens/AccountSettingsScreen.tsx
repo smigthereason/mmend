@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
   View,
   SafeAreaView,
@@ -15,7 +15,7 @@ import { useTheme } from "../context/ThemeContext";
 
 const AccountSettingsScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { isDark: isDarkMode, toggleTheme: toggleDarkMode } = useTheme(); // Use the hook
+  const { colors, isDark: isDarkMode, toggleTheme: toggleDarkMode } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [privacyEnabled, setPrivacyEnabled] = React.useState(true);
 
@@ -105,6 +105,104 @@ const AccountSettingsScreen: React.FC = () => {
     }
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingTop: 55,
+      paddingBottom: 16,
+      backgroundColor: colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    backButton: {
+      padding: 4,
+    },
+    headerTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    headerRightPlaceholder: {
+      width: 32,
+    },
+    accountInfoSection: {
+      backgroundColor: colors.surface,
+      padding: 20,
+      marginBottom: 12,
+    },
+    avatarContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    avatar: {
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: colors.primary + "20",
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 16,
+    },
+    accountText: {
+      flex: 1,
+    },
+    accountName: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 4,
+    },
+    accountEmail: {
+      fontSize: 14,
+      color: colors.textSecondary,
+    },
+    settingsSection: {
+      backgroundColor: colors.surface,
+      marginBottom: 20,
+    },
+    settingItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 20,
+      paddingVertical: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    settingIconContainer: {
+      width: 40,
+      alignItems: "center",
+      marginRight: 12,
+    },
+    settingInfo: {
+      flex: 1,
+    },
+    settingTitle: {
+      fontSize: 16,
+      fontWeight: "500",
+      color: colors.text,
+      marginBottom: 2,
+    },
+    settingDescription: {
+      fontSize: 13,
+      color: colors.textSecondary,
+    },
+    versionSection: {
+      alignItems: "center",
+      paddingVertical: 20,
+    },
+    versionText: {
+      fontSize: 14,
+      color: colors.textMuted,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -113,7 +211,7 @@ const AccountSettingsScreen: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#000" />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Account Settings</Text>
         <View style={styles.headerRightPlaceholder} />
@@ -124,7 +222,7 @@ const AccountSettingsScreen: React.FC = () => {
         <View style={styles.accountInfoSection}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
-              <Ionicons name="person" size={40} color="#ff85a2" />
+              <Ionicons name="person" size={40} color={colors.primary} />
             </View>
             <View style={styles.accountText}>
               <Text style={styles.accountName}>Sarah Johnson</Text>
@@ -146,7 +244,7 @@ const AccountSettingsScreen: React.FC = () => {
                 <Ionicons
                   name={item.icon as any}
                   size={24}
-                  color={item.color || "#ff85a2"}
+                  color={item.color || colors.primary}
                 />
               </View>
               <View style={styles.settingInfo}>
@@ -166,11 +264,11 @@ const AccountSettingsScreen: React.FC = () => {
                 <Switch
                   value={item.value}
                   onValueChange={item.onToggle}
-                  trackColor={{ false: "#767577", true: "#ff85a2" }}
+                  trackColor={{ false: "#767577", true: colors.primary }}
                   thumbColor="#fff"
                 />
               ) : (
-                <Ionicons name="chevron-forward" size={20} color="#999" />
+                <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
               )}
             </TouchableOpacity>
           ))}
@@ -184,103 +282,5 @@ const AccountSettingsScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 55,
-    paddingBottom: 16,
-    backgroundColor: "white",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee9d",
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  headerRightPlaceholder: {
-    width: 32,
-  },
-  accountInfoSection: {
-    backgroundColor: "#fff",
-    padding: 20,
-    marginBottom: 12,
-  },
-  avatarContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: "#fff5f7",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 16,
-  },
-  accountText: {
-    flex: 1,
-  },
-  accountName: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 4,
-  },
-  accountEmail: {
-    fontSize: 14,
-    color: "#666",
-  },
-  settingsSection: {
-    backgroundColor: "#fff",
-    marginBottom: 20,
-  },
-  settingItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-  },
-  settingIconContainer: {
-    width: 40,
-    alignItems: "center",
-    marginRight: 12,
-  },
-  settingInfo: {
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#000",
-    marginBottom: 2,
-  },
-  settingDescription: {
-    fontSize: 13,
-    color: "#666",
-  },
-  versionSection: {
-    alignItems: "center",
-    paddingVertical: 20,
-  },
-  versionText: {
-    fontSize: 14,
-    color: "#999",
-  },
-});
 
 export default AccountSettingsScreen;

@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ChatHeaderProps } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 const ChatHeader: React.FC<ChatHeaderProps> = ({
   userName,
@@ -9,17 +10,19 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
   isOnline,
   onBackPress,
 }) => {
+  const { colors } = useTheme(); // Get theme colors
+
   return (
-    <View style={styles.chatHeader}>
+    <View style={[styles.chatHeader, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
       <TouchableOpacity onPress={onBackPress}>
-        <Ionicons name="arrow-back" size={24} color="black" />
+        <Ionicons name="arrow-back" size={24} color={colors.text} />
       </TouchableOpacity>
       
       <TouchableOpacity style={styles.chatUserInfo}>
         <Image source={{ uri: userImage }} style={styles.chatUserImage} />
         <View>
-          <Text style={styles.chatUserName}>{userName}</Text>
-          <Text style={styles.chatUserStatus}>
+          <Text style={[styles.chatUserName, { color: colors.text }]}>{userName}</Text>
+          <Text style={[styles.chatUserStatus, { color: colors.textSecondary }]}>
             {isOnline ? "Online" : "Last seen recently"}
           </Text>
         </View>
@@ -27,13 +30,13 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
       
       <View style={styles.chatHeaderIcons}>
         <TouchableOpacity>
-          <Ionicons name="videocam" size={24} color="black" />
+          <Ionicons name="videocam" size={24} color={colors.text} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerIcon}>
-          <Ionicons name="call" size={24} color="black" />
+          <Ionicons name="call" size={24} color={colors.text} />
         </TouchableOpacity>
         <TouchableOpacity>
-          <Ionicons name="ellipsis-vertical" size={24} color="black" />
+          <Ionicons name="ellipsis-vertical" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
     </View>
@@ -48,8 +51,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingTop: 45,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    backgroundColor: 'white',
   },
   chatUserInfo: {
     flex: 1,
@@ -69,7 +70,6 @@ const styles = StyleSheet.create({
   },
   chatUserStatus: {
     fontSize: 12,
-    color: "gray",
   },
   chatHeaderIcons: {
     flexDirection: "row",

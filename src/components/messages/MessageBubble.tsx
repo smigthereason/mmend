@@ -1,27 +1,43 @@
+// MessageBubble.tsx
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { MessageBubbleProps } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
+  const { colors } = useTheme();
+
+  const sentBubbleColor = colors.primary; // Use pink for sent messages
+  const receivedBubbleColor = colors.background === '#121212' ? '#333333' : '#f0f0f0';
+
   return (
     <View style={[
       styles.messageBubble,
-      message.isSent ? styles.sentBubble : styles.receivedBubble
+      message.isSent ? 
+        [styles.sentBubble, { backgroundColor: sentBubbleColor }] : 
+        [styles.receivedBubble, { backgroundColor: receivedBubbleColor }]
     ]}>
       <Text style={[
         styles.messageText,
-        message.isSent ? styles.sentText : styles.receivedText
+        message.isSent ? 
+          [styles.sentText, { color: 'white' }] : 
+          [styles.receivedText, { color: colors.text }]
       ]}>
         {message.text}
       </Text>
       <View style={styles.messageMeta}>
-        <Text style={styles.messageTime}>{message.time}</Text>
+        <Text style={[
+          styles.messageTime, 
+          { color: message.isSent ? 'rgba(255, 255, 255, 0.7)' : colors.textMuted }
+        ]}>
+          {message.time}
+        </Text>
         {message.isSent && (
           <Ionicons 
             name={message.isRead ? "checkmark-done" : "checkmark"} 
             size={14} 
-            color={message.isRead ? "#3897f0" : "#999"} 
+            color={message.isRead ? 'white' : 'rgba(255, 255, 255, 0.7)'} 
             style={styles.readIndicator}
           />
         )}
@@ -38,24 +54,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   sentBubble: {
-    backgroundColor: "#3897f0",
     alignSelf: "flex-end",
     borderBottomRightRadius: 4,
   },
   receivedBubble: {
-    backgroundColor: "#f0f0f0",
     alignSelf: "flex-start",
     borderBottomLeftRadius: 4,
   },
   messageText: {
     fontSize: 16,
   },
-  sentText: {
-    color: "white",
-  },
-  receivedText: {
-    color: "black",
-  },
+  sentText: {},
+  receivedText: {},
   messageMeta: {
     flexDirection: "row",
     justifyContent: "flex-end",
@@ -65,7 +75,6 @@ const styles = StyleSheet.create({
   messageTime: {
     fontSize: 12,
     marginRight: 4,
-    color: "rgba(15, 14, 14, 0.7)",
   },
   readIndicator: {
     marginLeft: 4,

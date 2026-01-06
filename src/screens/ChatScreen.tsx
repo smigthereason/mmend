@@ -12,6 +12,7 @@ import { Message } from "../components/shared/types";
 import ChatHeader from "../components/messages/ChatHeader";
 import ChatList from "../components/messages/ChatList";
 import ChatInput from "../components/messages/ChatInput";
+import { useTheme } from "../context/ThemeContext";
 
 interface ChatScreenProps {
   route: any;
@@ -19,6 +20,7 @@ interface ChatScreenProps {
 }
 
 const ChatScreen: React.FC<ChatScreenProps> = ({ route, navigation }) => {
+  const { colors } = useTheme();
   const { conversation } = route.params;
   const [inputText, setInputText] = useState("");
   const [messages, setMessages] = useState<Message[]>(conversation.messageThread);
@@ -101,6 +103,19 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route, navigation }) => {
     markAsRead();
   }, []);
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    keyboardAvoidingView: {
+      flex: 1,
+    },
+    chatContent: {
+      flex: 1,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <ChatHeader 
@@ -130,18 +145,5 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  keyboardAvoidingView: {
-    flex: 1,
-  },
-  chatContent: {
-    flex: 1,
-  },
-});
 
 export default ChatScreen;

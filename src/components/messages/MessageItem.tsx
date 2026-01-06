@@ -1,27 +1,37 @@
+// MessageItem.tsx
 import React from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MessageItemProps } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 const MessageItem: React.FC<MessageItemProps> = ({ conversation, onPress }) => {
+  const { colors } = useTheme();
+
   return (
     <TouchableOpacity 
-      style={styles.messageItem} 
+      style={[styles.messageItem, { 
+        borderBottomColor: colors.border,
+        backgroundColor: colors.surface 
+      }]}
       onPress={() => onPress(conversation)}
     >
       <View style={styles.userImageContainer}>
         <Image source={{ uri: conversation.userImage }} style={styles.userImage} />
-        {conversation.isOnline && <View style={styles.onlineIndicator} />}
+        {conversation.isOnline && (
+          <View style={[styles.onlineIndicator, { backgroundColor: '#4CAF50' }]} />
+        )}
       </View>
       
       <View style={styles.messageContent}>
         <View style={styles.messageHeader}>
-          <Text style={styles.userName}>{conversation.userName}</Text>
-          <Text style={styles.timestamp}>{conversation.timestamp}</Text>
+          <Text style={[styles.userName, { color: colors.text }]}>{conversation.userName}</Text>
+          <Text style={[styles.timestamp, { color: colors.textMuted }]}>{conversation.timestamp}</Text>
         </View>
         <Text 
           style={[
             styles.lastMessage, 
-            conversation.unreadCount > 0 && styles.unreadMessage
+            { color: colors.textSecondary },
+            conversation.unreadCount > 0 && [styles.unreadMessage, { color: colors.text }]
           ]}
           numberOfLines={1}
         >
@@ -30,7 +40,7 @@ const MessageItem: React.FC<MessageItemProps> = ({ conversation, onPress }) => {
       </View>
       
       {conversation.unreadCount > 0 && (
-        <View style={styles.unreadBadge}>
+        <View style={[styles.unreadBadge, { backgroundColor: colors.primary }]}>
           <Text style={styles.unreadText}>{conversation.unreadCount}</Text>
         </View>
       )}
@@ -45,7 +55,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
   },
   userImageContainer: {
     position: "relative",
@@ -63,7 +72,6 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: "#4CAF50",
     borderWidth: 2,
     borderColor: "white",
   },
@@ -82,18 +90,14 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     fontSize: 12,
-    color: "gray",
   },
   lastMessage: {
     fontSize: 14,
-    color: "gray",
   },
   unreadMessage: {
     fontWeight: "bold",
-    color: "black",
   },
   unreadBadge: {
-    backgroundColor: "#FF3B30",
     borderRadius: 10,
     minWidth: 20,
     height: 20,

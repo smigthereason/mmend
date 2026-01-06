@@ -12,9 +12,10 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { specialistsData } from "../data/specialists";
-import Header from "../components/home/Header";
+import { useTheme } from "../context/ThemeContext";
 
 const ConsultScreen: React.FC = () => {
+  const { colors } = useTheme();
   const [points, setPoints] = useState(1578);
   const [selectedFilter, setSelectedFilter] = useState("All");
 
@@ -54,11 +55,11 @@ const ConsultScreen: React.FC = () => {
       
       <View style={styles.detailsRow}>
         <View style={styles.detailItem}>
-          <Ionicons name="time-outline" size={16} color="#666" />
+          <Ionicons name="time-outline" size={16} color={colors.textSecondary} />
           <Text style={styles.detailText}>{item.experience}</Text>
         </View>
         <View style={styles.detailItem}>
-          <Ionicons name="language-outline" size={16} color="#666" />
+          <Ionicons name="language-outline" size={16} color={colors.textSecondary} />
           <Text style={styles.detailText}>{item.languages.join(", ")}</Text>
         </View>
       </View>
@@ -89,9 +90,268 @@ const ConsultScreen: React.FC = () => {
     </TouchableOpacity>
   );
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    customHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingTop: 55,
+      paddingBottom: 16,
+      backgroundColor: colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    headerPoints: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colors.primary + "20",
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 20,
+      borderWidth: 2,
+      borderColor: colors.primary,
+    },
+    pointsText: {
+      fontSize: 14,
+      fontWeight: "700",
+      color: colors.primary,
+      marginLeft: 4,
+    },
+    pointsLabel: {
+      fontSize: 12,
+      fontWeight: "600",
+      color: colors.primary,
+      opacity: 0.8,
+      marginLeft: 2,
+    },
+    scrollContainer: {
+      flex: 1,
+    },
+    content: {
+      flex: 1,
+      paddingHorizontal: 16,
+      paddingTop: 16,
+    },
+    subtitle: {
+      fontSize: 16,
+      color: colors.textSecondary,
+      marginBottom: 20,
+    },
+    filterSection: {
+      marginBottom: 20,
+    },
+    filterScrollContent: {
+      paddingHorizontal: 0,
+      paddingVertical: 4,
+    },
+    filterButton: {
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      borderRadius: 25,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      marginRight: 10,
+      minWidth: 80,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    filterButtonActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    filterText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      fontWeight: "500",
+    },
+    filterTextActive: {
+      color: "#fff",
+      fontWeight: "600",
+    },
+    resultsText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      marginBottom: 16,
+      fontStyle: "italic",
+    },
+    listContent: {
+      paddingBottom: 40,
+    },
+    specialistCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 16,
+      shadowColor: colors.text,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+      elevation: 3,
+    },
+    specialistHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 16,
+    },
+    specialistImage: {
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      marginRight: 16,
+    },
+    specialistInfo: {
+      flex: 1,
+    },
+    specialistName: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 4,
+    },
+    specialistTitle: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      marginBottom: 6,
+    },
+    ratingContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    ratingText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      marginLeft: 6,
+    },
+    tierBadge: {
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 15,
+      alignSelf: "flex-start",
+    },
+    goldTier: {
+      backgroundColor: "#FFF3CD",
+      borderWidth: 1,
+      borderColor: "#FFD700",
+    },
+    silverTier: {
+      backgroundColor: "#E9ECEF",
+      borderWidth: 1,
+      borderColor: "#C0C0C0",
+    },
+    bronzeTier: {
+      backgroundColor: "#F8E5D6",
+      borderWidth: 1,
+      borderColor: "#CD7F32",
+    },
+    tierText: {
+      fontSize: 12,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    specialtyText: {
+      fontSize: 15,
+      color: colors.text,
+      fontWeight: "600",
+      marginBottom: 12,
+    },
+    detailsRow: {
+      flexDirection: "row",
+      marginBottom: 16,
+      flexWrap: "wrap",
+    },
+    detailItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginRight: 20,
+      marginBottom: 8,
+    },
+    detailText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      marginLeft: 6,
+    },
+    availabilityRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 20,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    availabilityInfo: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    availabilityText: {
+      fontSize: 14,
+      marginLeft: 6,
+      fontWeight: "500",
+    },
+    feeContainer: {
+      flexDirection: "row",
+      alignItems: "baseline",
+    },
+    feeText: {
+      fontSize: 22,
+      fontWeight: "bold",
+      color: colors.primary,
+    },
+    sessionText: {
+      fontSize: 13,
+      color: colors.textSecondary,
+      marginLeft: 3,
+    },
+    bookButton: {
+      backgroundColor: colors.primary,
+      borderRadius: 12,
+      paddingVertical: 14,
+      alignItems: "center",
+      shadowColor: colors.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+    bookButtonText: {
+      color: "#fff",
+      fontSize: 16,
+      fontWeight: "700",
+    },
+    emptyState: {
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 60,
+      paddingHorizontal: 20,
+    },
+    emptyText: {
+      fontSize: 18,
+      color: colors.textMuted,
+      fontWeight: "600",
+      marginTop: 16,
+      marginBottom: 8,
+    },
+    emptySubtext: {
+      fontSize: 14,
+      color: colors.border,
+      textAlign: "center",
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle={colors.isDark ? "light-content" : "dark-content"} backgroundColor={colors.surface} />
       
       {/* Custom Header - Title aligned to left */}
       <View style={styles.customHeader}>
@@ -154,7 +414,7 @@ const ConsultScreen: React.FC = () => {
             contentContainerStyle={styles.listContent}
             ListEmptyComponent={
               <View style={styles.emptyState}>
-                <Ionicons name="search-outline" size={64} color="#ccc" />
+                <Ionicons name="search-outline" size={64} color={colors.border} />
                 <Text style={styles.emptyText}>No specialists found</Text>
                 <Text style={styles.emptySubtext}>Try a different filter</Text>
               </View>
@@ -165,263 +425,5 @@ const ConsultScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-  },
-  customHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 55,
-    paddingBottom: 16,
-    backgroundColor: "white",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  headerPoints: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff5f7",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: "#ff85a2",
-  },
-  pointsText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#ff85a2",
-    marginLeft: 4,
-  },
-  pointsLabel: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#ff85a2",
-    opacity: 0.8,
-    marginLeft: 2,
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 20,
-  },
-  filterSection: {
-    marginBottom: 20,
-  },
-  filterScrollContent: {
-    paddingHorizontal: 0,
-    paddingVertical: 4,
-  },
-  filterButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 25,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginRight: 10,
-    minWidth: 80,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  filterButtonActive: {
-    backgroundColor: "#ff85a2",
-    borderColor: "#ff85a2",
-  },
-  filterText: {
-    fontSize: 14,
-    color: "#666",
-    fontWeight: "500",
-  },
-  filterTextActive: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  resultsText: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 16,
-    fontStyle: "italic",
-  },
-  listContent: {
-    paddingBottom: 40,
-  },
-  specialistCard: {
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  specialistHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  specialistImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    marginRight: 16,
-  },
-  specialistInfo: {
-    flex: 1,
-  },
-  specialistName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 4,
-  },
-  specialistTitle: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 6,
-  },
-  ratingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  ratingText: {
-    fontSize: 14,
-    color: "#666",
-    marginLeft: 6,
-  },
-  tierBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-    alignSelf: "flex-start",
-  },
-  goldTier: {
-    backgroundColor: "#FFF3CD",
-    borderWidth: 1,
-    borderColor: "#FFD700",
-  },
-  silverTier: {
-    backgroundColor: "#E9ECEF",
-    borderWidth: 1,
-    borderColor: "#C0C0C0",
-  },
-  bronzeTier: {
-    backgroundColor: "#F8E5D6",
-    borderWidth: 1,
-    borderColor: "#CD7F32",
-  },
-  tierText: {
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  specialtyText: {
-    fontSize: 15,
-    color: "#000",
-    fontWeight: "600",
-    marginBottom: 12,
-  },
-  detailsRow: {
-    flexDirection: "row",
-    marginBottom: 16,
-    flexWrap: "wrap",
-  },
-  detailItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 20,
-    marginBottom: 8,
-  },
-  detailText: {
-    fontSize: 14,
-    color: "#666",
-    marginLeft: 6,
-  },
-  availabilityRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
-  },
-  availabilityInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  availabilityText: {
-    fontSize: 14,
-    marginLeft: 6,
-    fontWeight: "500",
-  },
-  feeContainer: {
-    flexDirection: "row",
-    alignItems: "baseline",
-  },
-  feeText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#ff85a2",
-  },
-  sessionText: {
-    fontSize: 13,
-    color: "#666",
-    marginLeft: 3,
-  },
-  bookButton: {
-    backgroundColor: "#ff85a2",
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: "center",
-    shadowColor: "#ff85a2",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  bookButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  emptyState: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 60,
-    paddingHorizontal: 20,
-  },
-  emptyText: {
-    fontSize: 18,
-    color: "#999",
-    fontWeight: "600",
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: "#ccc",
-    textAlign: "center",
-  },
-});
 
 export default ConsultScreen;

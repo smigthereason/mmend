@@ -1,18 +1,22 @@
+// PostHeader.tsx
 import React from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { PostHeaderProps } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 const PostHeader: React.FC<PostHeaderProps> = ({ username, userImage, time }) => {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.postHeader}>
+    <View style={[styles.postHeader, { backgroundColor: colors.surface }]}>
       <Image source={{ uri: userImage }} style={styles.userImage} />
       <View style={styles.userInfo}>
-        <Text style={styles.username}>{username}</Text>
-        <Text style={styles.postTime}>{time}</Text>
+        <Text style={[styles.username, { color: colors.text }]}>{username}</Text>
+        <Text style={[styles.postTime, { color: colors.textMuted }]}>{time}</Text>
       </View>
       <TouchableOpacity style={styles.menuButton}>
-        <Ionicons name="ellipsis-horizontal" size={24} color="black" />
+        <Ionicons name="ellipsis-horizontal" size={24} color={colors.text} />
       </TouchableOpacity>
     </View>
   );
@@ -38,7 +42,6 @@ const styles = StyleSheet.create({
   },
   postTime: {
     fontSize: 12,
-    color: "gray",
   },
   menuButton: {
     padding: 5,

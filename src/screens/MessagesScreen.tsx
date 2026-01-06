@@ -5,12 +5,14 @@ import MessagesHeader from "../components/messages/MessagesHeader";
 import SearchBar from "../components/messages/SearchBar";
 import MessageList from "../components/messages/MessageList";
 import { conversationsData } from "../data/conversations";
+import { useTheme } from "../context/ThemeContext";
 
 interface MessagesScreenProps {
   navigation: any;
 }
 
 const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
+  const { colors } = useTheme();
   const [searchText, setSearchText] = useState("");
   const [conversations, setConversations] = useState<Conversation[]>(conversationsData);
 
@@ -33,6 +35,22 @@ const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
     conv.userName.toLowerCase().includes(searchText.toLowerCase()) ||
     conv.lastMessage.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    emptyText: {
+      fontSize: 16,
+      color: colors.textSecondary,
+    },
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,21 +79,5 @@ const MessagesScreen: React.FC<MessagesScreenProps> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyText: {
-    fontSize: 16,
-    color: "#999",
-  },
-});
 
 export default MessagesScreen;

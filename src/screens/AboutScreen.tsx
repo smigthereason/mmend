@@ -12,9 +12,11 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "../context/ThemeContext";
 
 const AboutScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   const handleShare = async () => {
     try {
@@ -73,6 +75,158 @@ const AboutScreen: React.FC = () => {
     },
   ];
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingTop: 55,
+      paddingBottom: 16,
+      backgroundColor: colors.surface,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    backButton: {
+      padding: 4,
+    },
+    headerTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+    },
+    headerRightPlaceholder: {
+      width: 32,
+    },
+    appInfoSection: {
+      alignItems: "center",
+      padding: 40,
+      backgroundColor: colors.surface,
+    },
+    logoImage: {
+      height: 120,
+      width: 220,
+    },
+    appTagline: {
+      fontSize: 16,
+      color: colors.textSecondary,
+      marginBottom: 20,
+    },
+    appDescription: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      textAlign: "center",
+      lineHeight: 22,
+    },
+    detailsSection: {
+      backgroundColor: colors.surface,
+      marginTop: 12,
+      paddingHorizontal: 20,
+    },
+    detailItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: 18,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    detailLeft: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    detailTitle: {
+      fontSize: 16,
+      color: colors.text,
+      marginLeft: 16,
+    },
+    detailRight: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    detailValue: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      marginRight: 8,
+    },
+    teamSection: {
+      backgroundColor: colors.surface,
+      marginTop: 12,
+      padding: 20,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: colors.text,
+      marginBottom: 16,
+    },
+    teamDescription: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      lineHeight: 22,
+      marginBottom: 24,
+    },
+    teamMembers: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    teamMember: {
+      alignItems: "center",
+      flex: 1,
+    },
+    memberAvatar: {
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      backgroundColor: colors.primary + '20',
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 12,
+    },
+    memberName: {
+      fontSize: 14,
+      fontWeight: "600",
+      color: colors.text,
+      marginBottom: 4,
+      textAlign: "center",
+    },
+    memberRole: {
+      fontSize: 12,
+      color: colors.textSecondary,
+      textAlign: "center",
+    },
+    linksSection: {
+      flexDirection: "row",
+      justifyContent: "center",
+      backgroundColor: colors.surface,
+      marginTop: 12,
+      paddingVertical: 20,
+    },
+    linkItem: {
+      alignItems: "center",
+      marginHorizontal: 20,
+    },
+    linkText: {
+      fontSize: 14,
+      color: colors.primary,
+      fontWeight: "500",
+      marginTop: 8,
+    },
+    copyrightSection: {
+      alignItems: "center",
+      paddingVertical: 30,
+    },
+    copyrightText: {
+      fontSize: 12,
+      color: colors.textMuted,
+      marginBottom: 4,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -80,7 +234,7 @@ const AboutScreen: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="arrow-back" size={24} color="#000" />
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>About</Text>
         <View style={styles.headerRightPlaceholder} />
@@ -90,11 +244,11 @@ const AboutScreen: React.FC = () => {
         {/* App Logo and Info */}
         <View style={styles.appInfoSection}>
           <View style={styles.logoImage}>
-        <Image
-                source={require("../../assets/logo.png")}
-                style={styles.logoImage}
-                resizeMode="contain"
-              />
+            <Image
+              source={require("../../assets/logo.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
           </View>
           
           <Text style={styles.appTagline}>Your Parenting Community</Text>
@@ -114,7 +268,7 @@ const AboutScreen: React.FC = () => {
               disabled={!item.action}
             >
               <View style={styles.detailLeft}>
-                <Ionicons name={item.icon as any} size={24} color="#ff85a2" />
+                <Ionicons name={item.icon as any} size={24} color={colors.primary} />
                 <Text style={styles.detailTitle}>{item.title}</Text>
               </View>
               <View style={styles.detailRight}>
@@ -122,7 +276,7 @@ const AboutScreen: React.FC = () => {
                   <Text style={styles.detailValue}>{item.value}</Text>
                 )}
                 {item.action && (
-                  <Ionicons name="chevron-forward" size={20} color="#999" />
+                  <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
                 )}
               </View>
             </TouchableOpacity>
@@ -140,7 +294,7 @@ const AboutScreen: React.FC = () => {
           <View style={styles.teamMembers}>
             <View style={styles.teamMember}>
               <View style={styles.memberAvatar}>
-                <Ionicons name="person" size={24} color="#ff85a2" />
+                <Ionicons name="person" size={24} color={colors.primary} />
               </View>
               <Text style={styles.memberName}>Victor Maina</Text>
               <Text style={styles.memberRole}>Founder & CEO</Text>
@@ -148,7 +302,7 @@ const AboutScreen: React.FC = () => {
 
             <View style={styles.teamMember}>
               <View style={styles.memberAvatar}>
-                <Ionicons name="person" size={24} color="#ff85a2" />
+                <Ionicons name="person" size={24} color={colors.primary} />
               </View>
               <Text style={styles.memberName}>Dr. James Wilson</Text>
               <Text style={styles.memberRole}>Child Psychologist</Text>
@@ -156,7 +310,7 @@ const AboutScreen: React.FC = () => {
 
             <View style={styles.teamMember}>
               <View style={styles.memberAvatar}>
-                <Ionicons name="person" size={24} color="#ff85a2" />
+                <Ionicons name="person" size={24} color={colors.primary} />
               </View>
               <Text style={styles.memberName}>Maria Garcia</Text>
               <Text style={styles.memberRole}>Product Designer</Text>
@@ -170,7 +324,7 @@ const AboutScreen: React.FC = () => {
             style={styles.linkItem}
             onPress={() => Linking.openURL("https://mothermend.app")}
           >
-            <Ionicons name="globe-outline" size={24} color="#ff85a2" />
+            <Ionicons name="globe-outline" size={24} color={colors.primary} />
             <Text style={styles.linkText}>Website</Text>
           </TouchableOpacity>
 
@@ -178,7 +332,7 @@ const AboutScreen: React.FC = () => {
             style={styles.linkItem}
             onPress={() => Linking.openURL("https://twitter.com/Mothermend")}
           >
-            <Ionicons name="logo-twitter" size={24} color="#ff85a2" />
+            <Ionicons name="logo-twitter" size={24} color={colors.primary} />
             <Text style={styles.linkText}>Twitter</Text>
           </TouchableOpacity>
 
@@ -186,7 +340,7 @@ const AboutScreen: React.FC = () => {
             style={styles.linkItem}
             onPress={() => Linking.openURL("https://instagram.com/Mothermend")}
           >
-            <Ionicons name="logo-instagram" size={24} color="#ff85a2" />
+            <Ionicons name="logo-instagram" size={24} color={colors.primary} />
             <Text style={styles.linkText}>Instagram</Text>
           </TouchableOpacity>
         </View>
@@ -200,164 +354,5 @@ const AboutScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f8f9fa",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 55,
-    paddingBottom: 16,
-    backgroundColor: "white",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee9d",
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000",
-  },
-  headerRightPlaceholder: {
-    width: 32,
-  },
-  appInfoSection: {
-    alignItems: "center",
-    padding: 40,
-    backgroundColor: "#fff",
-  },
-  
-   logoImage: {
-    height: 120,
-    width: 220,
-  },
-  appName: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 8,
-  },
-  appTagline: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 20,
-  },
-  appDescription: {
-    fontSize: 14,
-    color: "#666",
-    textAlign: "center",
-    lineHeight: 22,
-  },
-  detailsSection: {
-    backgroundColor: "#fff",
-    marginTop: 12,
-    paddingHorizontal: 20,
-  },
-  detailItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 18,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-  },
-  detailLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  detailTitle: {
-    fontSize: 16,
-    color: "#000",
-    marginLeft: 16,
-  },
-  detailRight: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  detailValue: {
-    fontSize: 14,
-    color: "#666",
-    marginRight: 8,
-  },
-  teamSection: {
-    backgroundColor: "#fff",
-    marginTop: 12,
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#000",
-    marginBottom: 16,
-  },
-  teamDescription: {
-    fontSize: 14,
-    color: "#666",
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  teamMembers: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  teamMember: {
-    alignItems: "center",
-    flex: 1,
-  },
-  memberAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#fff5f7",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  memberName: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#000",
-    marginBottom: 4,
-    textAlign: "center",
-  },
-  memberRole: {
-    fontSize: 12,
-    color: "#666",
-    textAlign: "center",
-  },
-  linksSection: {
-    flexDirection: "row",
-    justifyContent: "center",
-    backgroundColor: "#fff",
-    marginTop: 12,
-    paddingVertical: 20,
-  },
-  linkItem: {
-    alignItems: "center",
-    marginHorizontal: 20,
-  },
-  linkText: {
-    fontSize: 14,
-    color: "#ff85a2",
-    fontWeight: "500",
-    marginTop: 8,
-  },
-  copyrightSection: {
-    alignItems: "center",
-    paddingVertical: 30,
-  },
-  copyrightText: {
-    fontSize: 12,
-    color: "#999",
-    marginBottom: 4,
-  },
-});
 
 export default AboutScreen;

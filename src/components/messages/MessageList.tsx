@@ -1,7 +1,9 @@
+// MessageList.tsx
 import React from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import MessageItem from "./MessageItem";
 import { Conversation } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 interface MessageListProps {
   conversations: Conversation[];
@@ -12,6 +14,8 @@ const MessageList: React.FC<MessageListProps> = ({
   conversations,
   onConversationPress,
 }) => {
+  const { colors } = useTheme();
+
   return (
     <FlatList
       data={conversations}
@@ -20,7 +24,7 @@ const MessageList: React.FC<MessageListProps> = ({
       )}
       keyExtractor={(item) => item.id}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[styles.listContent, { backgroundColor: colors.background }]}
     />
   );
 };

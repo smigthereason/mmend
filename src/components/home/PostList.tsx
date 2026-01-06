@@ -1,7 +1,9 @@
+// PostList.tsx
 import React from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import PostItem from "./PostItem";
 import { Post } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 interface PostListProps {
   posts: Post[];
@@ -14,6 +16,8 @@ const PostList: React.FC<PostListProps> = ({
   onRefresh, 
   refreshing = false 
 }) => {
+  const { colors } = useTheme();
+
   return (
     <FlatList
       data={posts}
@@ -22,12 +26,9 @@ const PostList: React.FC<PostListProps> = ({
       showsVerticalScrollIndicator={false}
       refreshing={refreshing}
       onRefresh={onRefresh}
+      style={{ backgroundColor: colors.background }}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  // Add any container styles if needed
-});
 
 export default PostList;

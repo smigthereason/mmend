@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,7 +14,7 @@ import EditProfileScreen from "../screens/EditProfileScreen";
 import SecurityScreen from "../screens/SecurityScreen";
 import HelpSupportScreen from "../screens/HelpSupportScreen";
 import AboutScreen from "../screens/AboutScreen";
-import { ThemeProvider } from "../context/ThemeContext";
+import { ThemeProvider, useTheme } from "../context/ThemeContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -110,97 +110,122 @@ const AppNavigator = () => {
   const [badgeCount, setBadgeCount] = React.useState<number | undefined>(
     undefined
   );
+  const { colors, isDark } = useTheme();
+
+  // Create navigation themes based on current theme
+  const navigationTheme = isDark ? DarkTheme : DefaultTheme;
+  
+  const customTheme = {
+    ...navigationTheme,
+    colors: {
+      ...navigationTheme.colors,
+      primary: colors.primary,
+      background: colors.background,
+      card: colors.surface,
+      text: colors.text,
+      border: colors.border,
+    },
+  };
 
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarShowLabel: true,
-            tabBarActiveTintColor: "#ff85a2",
-            tabBarInactiveTintColor: "gray",
-            tabBarStyle: {
-              backgroundColor: "#fff",
-              borderTopWidth: 1,
-              borderTopColor: "#eee",
-              height: 100,
-              paddingBottom: 8,
-              paddingTop: 8,
+    <NavigationContainer theme={customTheme}>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarShowLabel: true,
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: colors.textSecondary,
+          tabBarStyle: {
+            backgroundColor: colors.surface,
+            borderTopWidth: 1,
+            borderTopColor: colors.border,
+            height: 100,
+            paddingBottom: 8,
+            paddingTop: 8,
+          },
+          headerStyle: {
+            backgroundColor: colors.surface,
+          },
+          headerTitleStyle: {
+            fontWeight: "bold",
+            color: colors.text,
+          },
+          headerTitleAlign: "center",
+          headerTintColor: colors.text,
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" size={size} color={color} />
+            ),
+            title: "Home",
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SearchStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="search" size={size} color={color} />
+            ),
+            title: "Search",
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Messages"
+          component={MessagesStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="chatbubble" size={size} color={color} />
+            ),
+            tabBarBadge: badgeCount,
+            title: "Messages",
+            headerShown: false,
+          }}
+          listeners={({ navigation }) => ({
+            tabPress: (e) => {
+              setBadgeCount(undefined);
             },
-            headerStyle: {
-              backgroundColor: "white",
-            },
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-            headerTitleAlign: "center",
           })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeStack}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="home" size={size} color={color} />
-              ),
-              title: "Home",
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Search"
-            component={SearchStack}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="search" size={size} color={color} />
-              ),
-              title: "Search",
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Messages"
-            component={MessagesStack}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="chatbubble" size={size} color={color} />
-              ),
-              tabBarBadge: badgeCount,
-              title: "Messages",
-              headerShown: false,
-            }}
-            listeners={({ navigation }) => ({
-              tabPress: (e) => {
-                setBadgeCount(undefined);
-              },
-            })}
-          />
-          <Tab.Screen
-            name="Consult"
-            component={ConsultStack}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="medical" size={size} color={color} />
-              ),
-              title: "Consult",
-              headerShown: false,
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={ProfileStack}
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="person" size={size} color={color} />
-              ),
-              title: "Profile",
-              headerShown: false,
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
+        />
+        <Tab.Screen
+          name="Consult"
+          component={ConsultStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="medical" size={size} color={color} />
+            ),
+            title: "Consult",
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileStack}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person" size={size} color={color} />
+            ),
+            title: "Profile",
+            headerShown: false,
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+// Wrap the main app with ThemeProvider
+const AppWithTheme = () => {
+  return (
+    <ThemeProvider>
+      <AppNavigator />
     </ThemeProvider>
   );
 };
 
-export default AppNavigator;
+export default AppWithTheme;

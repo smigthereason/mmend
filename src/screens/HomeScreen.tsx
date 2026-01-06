@@ -6,8 +6,10 @@ import StoryList from "../components/home/StoryList";
 import PostList from "../components/home/PostList";
 import { Story, Post } from "../components/shared/types";
 import { postsData } from "../data/posts";
+import { useTheme } from "../context/ThemeContext";
 
 const HomeScreen: React.FC = () => {
+  const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
   const [stories, setStories] = useState<Story[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -77,6 +79,21 @@ const HomeScreen: React.FC = () => {
     setPoints(prev => prev + 50);
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
+    safeArea: {
+      backgroundColor: colors.surface,
+    },
+    storyListContainer: {
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      backgroundColor: colors.surface,
+    },
+  });
+
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
@@ -97,20 +114,5 @@ const HomeScreen: React.FC = () => {
     </SafeAreaProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  safeArea: {
-    backgroundColor: "white",
-  },
-  storyListContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    backgroundColor: "white",
-  },
-});
 
 export default HomeScreen;

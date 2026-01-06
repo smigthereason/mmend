@@ -1,14 +1,18 @@
+// StoryItem.tsx
 import React from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { StoryItemProps } from "../shared/types";
+import { useTheme } from "../../context/ThemeContext";
 
 const StoryItem: React.FC<StoryItemProps> = ({ story }) => {
+  const { colors } = useTheme();
+
   return (
     <TouchableOpacity style={styles.storyItem}>
-      <View style={styles.storyBorder}>
+      <View style={[styles.storyBorder, { borderColor: colors.primary }]}>
         <Image source={{ uri: story.image }} style={styles.storyImage} />
       </View>
-      <Text style={styles.storyName}>{story.name}</Text>
+      <Text style={[styles.storyName, { color: colors.text }]}>{story.name}</Text>
     </TouchableOpacity>
   );
 };
@@ -23,7 +27,6 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
     borderWidth: 2,
-    borderColor: "#ff85a2",
     justifyContent: "center",
     alignItems: "center",
   },

@@ -1,5 +1,6 @@
 // context/ThemeContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface ThemeColors {
   background: string;
@@ -43,7 +44,33 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     border: '#333333',
   };
 
-  const toggleTheme = () => setIsDark(!isDark);
+  // Load theme preference on app start
+  useEffect(() => {
+    loadThemePreference();
+  }, []);
+
+  const loadThemePreference = async () => {
+    try {
+      const savedTheme = await AsyncStorage.getItem('app_theme');
+      if (savedTheme !== null) {
+        setIsDark(savedTheme === 'dark');
+      }
+    } catch (error) {
+      console.error('Error loading theme preference:', error);
+    }
+  };
+
+  const toggleTheme = async () => {
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    
+    // Save theme preference
+    try {
+      await AsyncStorage.setItem('app_theme', newTheme ? 'dark' : 'light');
+    } catch (error) {
+      console.error('Error saving theme preference:', error);
+    }
+  };
 
   return (
     <ThemeContext.Provider

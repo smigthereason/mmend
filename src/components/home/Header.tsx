@@ -1,6 +1,8 @@
+// Header.tsx
 import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
 
 interface HeaderProps {
   onAddPress?: () => void;
@@ -8,6 +10,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onAddPress, points = 1578 }) => {
+  const { colors } = useTheme();
+
   // Function to format points
   const formatPoints = (points: number): string => {
     if (points >= 1000000) {
@@ -17,11 +21,14 @@ const Header: React.FC<HeaderProps> = ({ onAddPress, points = 1578 }) => {
     } else if (points >= 1000) {
       return (points / 1000).toFixed(1) + 'k';
     }
-    return points.toLocaleString(); // Add commas for thousands
+    return points.toLocaleString();
   };
 
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, { 
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border 
+    }]}>
       <Image
         source={require("../../../assets/logo.png")}
         style={styles.logoImage}
@@ -30,24 +37,32 @@ const Header: React.FC<HeaderProps> = ({ onAddPress, points = 1578 }) => {
       <View style={styles.headerIcons}>
         {/* Add Post Button - Always comes first */}
         <TouchableOpacity 
-          style={styles.addButton} 
+          style={[styles.addButton, { 
+            borderColor: colors.primary,
+            backgroundColor: colors.surface 
+          }]} 
           onPress={onAddPress}
         >
           <Ionicons 
             name="add" 
             size={28} 
-            color="#ff85a2" 
+            color={colors.primary} 
           />
         </TouchableOpacity>
         
         {/* Points Display */}
-        <View style={styles.pointsContainer}>
+        <View style={[styles.pointsContainer, { 
+          backgroundColor: colors.background === '#f8f9fa' ? '#fff5f7' : colors.surface,
+          borderColor: colors.primary 
+        }]}>
           <View style={styles.pointsContent}>
             <Ionicons name="star" size={16} color="#FFD700" style={styles.starIcon} />
-            <Text style={styles.pointsText}>
+            <Text style={[styles.pointsText, { color: colors.primary }]}>
               {formatPoints(points)}
             </Text>
-            <Text style={styles.pointsLabel}> pts</Text>
+            <Text style={[styles.pointsLabel, { color: colors.primary, opacity: 0.8 }]}>
+              pts
+            </Text>
           </View>
         </View>
       </View>
@@ -63,10 +78,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 55,
     paddingBottom: 16,
-    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee9d",
-
   },
   logoImage: {
     height: 40,
@@ -84,15 +96,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#ff85a2",
-    backgroundColor: "white",
     borderStyle: "dashed",
   },
   pointsContainer: {
-    backgroundColor: "#fff5f7",
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: "#ff85a2",
     paddingHorizontal: 14,
     paddingVertical: 6,
     minWidth: 80,
@@ -108,13 +116,10 @@ const styles = StyleSheet.create({
   pointsText: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#ff85a2",
   },
   pointsLabel: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#ff85a2",
-    opacity: 0.8,
     marginLeft: 2,
   },
 });

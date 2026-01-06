@@ -1,7 +1,9 @@
+// MessagesHeader.tsx
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
+import { useTheme } from "../../context/ThemeContext";
 
 interface MessagesHeaderProps {
   onCameraPress?: () => void;
@@ -12,6 +14,8 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
   onCameraPress,
   onComposePress,
 }) => {
+  const { colors } = useTheme();
+
   const handleCameraPress = async () => {
     if (onCameraPress) {
       onCameraPress();
@@ -39,14 +43,17 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
   };
 
   return (
-    <View style={styles.header}>
-      <Text style={styles.headerTitle}>Messages</Text>
+    <View style={[styles.header, { 
+      backgroundColor: colors.surface,
+      borderBottomColor: colors.border 
+    }]}>
+      <Text style={[styles.headerTitle, { color: colors.text }]}>Messages</Text>
       <View style={styles.headerIcons}>
         <TouchableOpacity style={styles.headerIcon} onPress={handleCameraPress}>
-          <Ionicons name="camera-outline" size={28} color="black" />
+          <Ionicons name="camera-outline" size={28} color={colors.text} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerIcon} onPress={onComposePress}>
-          <Ionicons name="pencil" size={24} color="black" />
+          <Ionicons name="pencil" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>
     </View>
@@ -55,15 +62,13 @@ const MessagesHeader: React.FC<MessagesHeaderProps> = ({
 
 const styles = StyleSheet.create({
   header: {
-  flexDirection: "row",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingTop: 55,
     paddingBottom: 16,
-    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "#eeeeee9d",
   },
   headerTitle: {
     fontSize: 24,
