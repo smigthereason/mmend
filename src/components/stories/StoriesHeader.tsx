@@ -35,9 +35,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 15,
-    paddingTop: 10,
     zIndex: 10,
+    paddingHorizontal: 16,
+    paddingTop: 15,
+    paddingBottom: 16,
+    borderBottomWidth: 1
   },
   userInfo: {
     flexDirection: "row",

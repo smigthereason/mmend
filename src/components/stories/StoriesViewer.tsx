@@ -11,9 +11,9 @@ import {
   PanResponder,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { StoriesViewerProps, UserStory } from "../shared/types";
-import StoryProgressBar from "./StoriesProgressBar";
-import StoryHeader from "./StoriesHeader";
+import { StoriesViewerProps } from "../shared/types";
+import StoriesProgressBar from "./StoriesProgressBar";
+import StoriesHeader from "./StoriesHeader";
 
 const { width, height } = Dimensions.get("window");
 
@@ -26,60 +26,84 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
   const [currentUserIndex, setCurrentUserIndex] = useState(initialIndex);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const progressAnim = useRef(new Animated.Value(0)).current;
-  const progressInterval = useRef<NodeJS.Timeout>();
+  const progressInterval = useRef<NodeJS.Timeout | null>(null);
+  const isMounted = useRef(true);
 
   const currentUser = stories[currentUserIndex];
   const currentStory = currentUser?.stories[currentStoryIndex];
   const totalStories = currentUser?.stories.length || 0;
 
-  // Mark story as seen
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+      if (progressInterval.current) {
+        clearTimeout(progressInterval.current);
+      }
+    };
+  }, []);
+
+  // Mark story as seen - FIXED: Only run when story changes
   useEffect(() => {
     if (currentUser && currentStory && onStorySeen) {
       onStorySeen(currentUser.userId, currentStoryIndex);
     }
-  }, [currentUserIndex, currentStoryIndex]);
+  }, [currentUser?.userId, currentStoryIndex, onStorySeen]); // Fixed dependencies
 
-  // Progress animation
+  // Progress animation with proper cleanup
   const startProgressAnimation = useCallback(() => {
-    if (!currentStory || paused) return;
+    if (!currentStory || paused || !isMounted.current) return;
 
-    const duration = currentStory.duration * 1000; // Convert to milliseconds
+    const duration = currentStory.duration * 1000;
 
+    // Reset animation
     progressAnim.setValue(0);
     
+    // Clear any existing timeout
+    if (progressInterval.current) {
+      clearTimeout(progressInterval.current);
+    }
+    
+    // Start new animation
     progressInterval.current = setTimeout(() => {
+      if (!isMounted.current) return;
+      
       Animated.timing(progressAnim, {
         toValue: 1,
         duration,
         useNativeDriver: false,
       }).start(({ finished }) => {
-        if (finished) {
+        if (finished && isMounted.current) {
           nextStory();
         }
       });
     }, 100);
   }, [currentStory, paused]);
 
-  const clearProgress = () => {
+  const clearProgress = useCallback(() => {
     if (progressInterval.current) {
       clearTimeout(progressInterval.current);
+      progressInterval.current = null;
     }
     progressAnim.setValue(0);
-  };
+  }, []);
 
+  // Handle story changes - FIXED: Proper cleanup
   useEffect(() => {
     if (currentStory) {
       clearProgress();
+      setImageLoaded(false);
       startProgressAnimation();
     }
 
     return () => {
       clearProgress();
     };
-  }, [currentUserIndex, currentStoryIndex, currentStory, paused]);
+  }, [currentUserIndex, currentStoryIndex, startProgressAnimation, clearProgress]);
 
-  const nextStory = () => {
+  const nextStory = useCallback(() => {
     if (currentStoryIndex < totalStories - 1) {
       setCurrentStoryIndex(prev => prev + 1);
     } else if (currentUserIndex < stories.length - 1) {
@@ -88,9 +112,9 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
     } else {
       onClose();
     }
-  };
+  }, [currentStoryIndex, totalStories, currentUserIndex, stories.length, onClose]);
 
-  const prevStory = () => {
+  const prevStory = useCallback(() => {
     if (currentStoryIndex > 0) {
       setCurrentStoryIndex(prev => prev - 1);
     } else if (currentUserIndex > 0) {
@@ -98,7 +122,7 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
       const prevUserStories = stories[currentUserIndex - 1].stories.length;
       setCurrentStoryIndex(prevUserStories - 1);
     }
-  };
+  }, [currentStoryIndex, currentUserIndex, stories]);
 
   // PanResponder for swipe gestures
   const panResponder = useRef(
@@ -108,16 +132,13 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
         const { dx, dy } = gestureState;
         const SWIPE_THRESHOLD = 50;
 
-        // Horizontal swipe for next/prev
         if (Math.abs(dx) > Math.abs(dy)) {
           if (dx > SWIPE_THRESHOLD) {
             prevStory();
           } else if (dx < -SWIPE_THRESHOLD) {
             nextStory();
           }
-        }
-        // Vertical swipe for close
-        else if (dy > SWIPE_THRESHOLD) {
+        } else if (dy > SWIPE_THRESHOLD) {
           onClose();
         }
       },
@@ -132,15 +153,8 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
     setPaused(false);
   };
 
-  const handleTap = (event: any) => {
-    const { locationX } = event.nativeEvent;
-    const screenMiddle = width / 2;
-
-    if (locationX < screenMiddle) {
-      prevStory();
-    } else {
-      nextStory();
-    }
+  const handleImageLoad = () => {
+    setImageLoaded(true);
   };
 
   if (!currentStory || !currentUser) {
@@ -148,20 +162,36 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
   }
 
   return (
-    <View style={styles.container} {...panResponder.panHandlers}>
+    <View style={styles.container}>
       <View
         style={styles.contentContainer}
         onTouchStart={handleLongPress}
         onTouchEnd={handlePressOut}
         onTouchCancel={handlePressOut}
+        {...panResponder.panHandlers}
       >
-        <Image
-          source={{ uri: currentStory.url }}
-          style={styles.storyImage}
-          resizeMode="cover"
-        />
+        {/* Background */}
+        <View style={styles.background} />
+        
+        {/* Story Image Container */}
+        <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: currentStory.url }}
+            style={[
+              styles.storyImage,
+              !imageLoaded && styles.hiddenImage
+            ]}
+            resizeMode="cover"
+            onLoad={handleImageLoad}
+            onError={() => {
+              // If image fails to load, skip to next story
+              setTimeout(nextStory, 500);
+            }}
+          />
+        </View>
 
-        {currentStory.text && (
+        {/* Text overlay */}
+        {currentStory.text && imageLoaded && (
           <View style={styles.textOverlay}>
             <Text style={styles.storyText}>{currentStory.text}</Text>
           </View>
@@ -170,7 +200,7 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
         {/* Progress bars */}
         <View style={styles.progressContainer}>
           {currentUser.stories.map((_, index) => (
-            <StoryProgressBar
+            <StoriesProgressBar
               key={index}
               currentIndex={currentStoryIndex}
               totalStories={totalStories}
@@ -182,23 +212,25 @@ const StoriesViewer: React.FC<StoriesViewerProps> = ({
         </View>
 
         {/* Header */}
-        <StoryHeader
+        <StoriesHeader
           user={currentUser}
           currentTime={currentStory.postedAt}
           onClose={onClose}
         />
 
-        {/* Tap areas for navigation */}
-        <TouchableOpacity
-          style={[styles.tapArea, styles.leftTapArea]}
-          onPress={() => prevStory()}
-          activeOpacity={1}
-        />
-        <TouchableOpacity
-          style={[styles.tapArea, styles.rightTapArea]}
-          onPress={() => nextStory()}
-          activeOpacity={1}
-        />
+        {/* Navigation tap areas - simplified */}
+        <View style={styles.navigationContainer}>
+          <TouchableOpacity
+            style={[styles.tapArea, styles.leftTapArea]}
+            onPress={prevStory}
+            activeOpacity={0.7}
+          />
+          <TouchableOpacity
+            style={[styles.tapArea, styles.rightTapArea]}
+            onPress={nextStory}
+            activeOpacity={0.7}
+          />
+        </View>
       </View>
     </View>
   );
@@ -212,9 +244,22 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
   },
+  background: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "#000",
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   storyImage: {
     width: "100%",
     height: "100%",
+    backgroundColor: "#000", // Prevent flashing with black background
+  },
+  hiddenImage: {
+    opacity: 0,
   },
   textOverlay: {
     position: "absolute",
@@ -235,18 +280,20 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     position: "absolute",
-    top: 10,
+    top: 40,
     left: 10,
     right: 10,
     flexDirection: "row",
     zIndex: 10,
+  },
+  navigationContainer: {
+    ...StyleSheet.absoluteFillObject,
   },
   tapArea: {
     position: "absolute",
     top: 0,
     bottom: 0,
     width: width / 3,
-    zIndex: 5,
   },
   leftTapArea: {
     left: 0,

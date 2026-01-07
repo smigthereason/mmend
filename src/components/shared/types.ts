@@ -98,10 +98,19 @@ export type Story = UserStory;
 
 export interface UserStoryItemProps {
   story: UserStory;
-  isFirst?: boolean;
-  onPress?: () => void;
+  isYourStory?: boolean; // Change from isFirst
+  onPress: () => void;
 }
-
+export interface UserStoryItemProps {
+  story: UserStory;
+  isYourStory?: boolean;
+  onPress: () => void;
+}
+export interface StoryListProps {
+  stories: UserStory[];
+  onStoryPress: (index: number) => void;
+  onCreateStory?: () => void;
+}
 export interface StoriesViewerProps {
   stories: UserStory[];
   initialIndex: number;
@@ -121,4 +130,12 @@ export interface StoryHeaderProps {
   user: UserStory;
   currentTime: string;
   onClose: () => void;
+}
+
+
+
+export interface StoryListProps {
+  stories: UserStory[];
+  onStoryPress: (index: number) => void;
+  onCreateStory?: () => void;
 }

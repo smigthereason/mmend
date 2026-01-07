@@ -1,100 +1,61 @@
-// Update HomeScreen.tsx
-import React, { useState, useEffect } from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+// HomeScreen.tsx
+import React, { useState, useEffect, useCallback } from "react";
+import { View, SafeAreaView, StyleSheet, Alert } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Header from "../components/home/Header";
-import StoryList from "../components/stories/StoryList"; // Updated import
+import StoryList from "../components/stories/StoryList";
 import PostList from "../components/home/PostList";
 import { UserStory, Post } from "../components/shared/types";
 import { postsData } from "../data/posts";
+import { storiesData } from "../data/stories";
 import { useTheme } from "../context/ThemeContext";
 
-// Sample stories data
-const sampleStories: UserStory[] = [
-  {
-    id: "0",
-    userId: "user0",
-    name: "Your Story",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-    hasUnseen: false,
-    seenStories: 0,
-    stories: [
-      {
-        id: "story0-1",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop",
-        duration: 5,
-        seen: false,
-        postedAt: "Just now",
-      },
-    ],
-  },
-  {
-    id: "1",
-    userId: "user1",
-    name: "Sarah Johnson",
-    image: "https://images.unsplash.com/photo-1496302912295-8d0451c184e2?q=80&w=876&auto=format&fit=crop",
-    hasUnseen: true,
-    seenStories: 0,
-    stories: [
-      {
-        id: "story1-1",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop",
-        duration: 5,
-        seen: false,
-        postedAt: "2 hours ago",
-      },
-    ],
-  },
-  // Add more stories...
-];
-
 interface HomeScreenProps {
-  navigation?: any; // Add navigation prop
+  navigation?: any;
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
-  const [stories, setStories] = useState<UserStory[]>(sampleStories);
+  const [stories, setStories] = useState<UserStory[]>(storiesData); // Use full data directly
   const [posts, setPosts] = useState<Post[]>(postsData);
   const [points, setPoints] = useState(1578);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = () => {
-    // Set posts from sample data
-    setPosts(postsData);
-    // Set stories from sample data
-    setStories(sampleStories);
-  };
-
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      loadData();
+      setPosts(postsData);
       setRefreshing(false);
       setPoints(prev => prev + 10);
     }, 1000);
-  };
+  }, []);
 
-  const handleAddPress = () => {
+  const handleAddPress = useCallback(() => {
     console.log("Add button pressed");
     setPoints(prev => prev + 50);
-  };
+  }, []);
 
-  const handleAddStory = () => {
-    console.log("Add story pressed");
-    // Navigate to create story screen or camera
-  };
+  const handleCreateStory = useCallback(() => {
+    Alert.alert(
+      "Create Story",
+      "Choose an option",
+      [
+        {
+          text: "Take Photo",
+          onPress: () => console.log("Open camera"),
+        },
+        {
+          text: "Choose from Gallery",
+          onPress: () => console.log("Open gallery"),
+        },
+        { text: "Cancel", style: "cancel" },
+      ]
+    );
+  }, []);
 
-  const handleStoryPress = (index: number) => {
-  // Navigate to StoriesScreen
-  navigation?.navigate("Stories", { initialIndex: index });
-};
+  const handleStoryPress = useCallback((index: number) => {
+    navigation?.navigate("Stories", { initialIndex: index });
+  }, [navigation]);
 
   const styles = StyleSheet.create({
     container: {
@@ -113,13 +74,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           <Header 
             onAddPress={handleAddPress} 
             points={points} 
-            onStoryPress={handleAddStory}
+            onStoryPress={handleCreateStory}
           />
         </SafeAreaView>
 
         <StoryList 
           stories={stories} 
           onStoryPress={handleStoryPress}
+          onCreateStory={handleCreateStory}
         />
         
         <PostList

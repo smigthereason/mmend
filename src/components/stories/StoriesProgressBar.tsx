@@ -1,5 +1,5 @@
 // StoriesProgressBar.tsx
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, memo } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 import { StoryProgressBarProps } from "../shared/types";
 
@@ -26,7 +26,7 @@ const StoriesProgressBar: React.FC<StoryProgressBarProps> = ({
     } else if (paused) {
       progressAnim.stopAnimation();
     }
-  }, [isActive, paused, index]);
+  }, [isActive, paused, index, storyDurations]);
 
   useEffect(() => {
     if (isCompleted) {
@@ -34,7 +34,7 @@ const StoriesProgressBar: React.FC<StoryProgressBarProps> = ({
     } else if (index > currentIndex) {
       progressAnim.setValue(0);
     }
-  }, [currentIndex, index]);
+  }, [currentIndex, index, isCompleted]);
 
   return (
     <View style={[styles.container, { marginRight: index < totalStories - 1 ? 4 : 0 }]}>
@@ -72,4 +72,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StoriesProgressBar;
+// Memoize to prevent unnecessary re-renders
+export default memo(StoriesProgressBar);

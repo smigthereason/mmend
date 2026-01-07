@@ -1,5 +1,5 @@
 // UserStoryItem.tsx
-import React from "react";
+import React, { memo } from "react";
 import { View, Image, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { UserStoryItemProps } from "../shared/types";
 import { useTheme } from "../../context/ThemeContext";
@@ -7,16 +7,15 @@ import Svg, { Circle } from "react-native-svg";
 
 const UserStoryItem: React.FC<UserStoryItemProps> = ({ 
   story, 
-  isFirst = false, 
+  isYourStory = false,
   onPress 
 }) => {
   const { colors } = useTheme();
-  const isYourStory = isFirst;
   const totalStories = story.stories.length;
   const seenStories = story.seenStories || 0;
-  const hasMultipleStories = totalStories > 1;
+  const hasMultipleStories = totalStories > 1 && !isYourStory;
+  const hasUnseenStories = story.hasUnseen && !isYourStory;
 
-  // Create dashed border for multiple stories
   const renderDashedBorder = () => {
     if (!hasMultipleStories) return null;
 
@@ -36,14 +35,13 @@ const UserStoryItem: React.FC<UserStoryItemProps> = ({
           cx={radius + strokeWidth / 2}
           cy={radius + strokeWidth / 2}
           r={radius}
-          stroke={story.hasUnseen ? colors.primary : colors.textSecondary}
+          stroke={hasUnseenStories ? colors.primary : colors.textSecondary}
           strokeWidth={strokeWidth}
           strokeDasharray={`${dashLength} ${gapLength}`}
           strokeDashoffset={-gapLength / 2}
           fill="none"
         />
         
-        {/* Progress for seen stories */}
         {seenStories > 0 && (
           <Circle
             cx={radius + strokeWidth / 2}
@@ -74,7 +72,7 @@ const UserStoryItem: React.FC<UserStoryItemProps> = ({
           { 
             borderColor: isYourStory 
               ? colors.border 
-              : story.hasUnseen 
+              : hasUnseenStories 
                 ? colors.primary 
                 : colors.textSecondary,
             borderWidth: isYourStory ? 2 : hasMultipleStories ? 0 : 3,
@@ -84,7 +82,7 @@ const UserStoryItem: React.FC<UserStoryItemProps> = ({
             source={{ uri: story.image }} 
             style={[
               styles.storyImage,
-              { opacity: story.hasUnseen ? 1 : 0.8 }
+              { opacity: hasUnseenStories || isYourStory ? 1 : 0.8 }
             ]} 
           />
           
@@ -95,7 +93,6 @@ const UserStoryItem: React.FC<UserStoryItemProps> = ({
           )}
         </View>
 
-        {/* Story count badge */}
         {hasMultipleStories && !isYourStory && (
           <View style={[styles.storyCountBadge, { backgroundColor: colors.primary }]}>
             <Text style={[styles.storyCountText, { color: '#fff' }]}>
@@ -109,8 +106,7 @@ const UserStoryItem: React.FC<UserStoryItemProps> = ({
         {isYourStory ? "Your Story" : story.name}
       </Text>
       
-      {/* Unseen dot indicator */}
-      {story.hasUnseen && !isYourStory && !hasMultipleStories && (
+      {hasUnseenStories && !hasMultipleStories && (
         <View style={[styles.unseenDot, { backgroundColor: colors.primary }]} />
       )}
     </TouchableOpacity>
@@ -120,13 +116,14 @@ const UserStoryItem: React.FC<UserStoryItemProps> = ({
 const styles = StyleSheet.create({
   storyItem: {
     alignItems: "center",
-    marginHorizontal: 4,
-    width: 100,
+    marginHorizontal: 8,
+    width: 80,
   },
   storyImageContainer: {
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 5,
   },
   dashedBorder: {
     position: "absolute",
@@ -152,19 +149,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 3,
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   addText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
+    lineHeight: 20,
   },
   storyName: {
-    marginTop: 5,
     fontSize: 12,
     textAlign: "center",
     width: '100%',
@@ -197,4 +196,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserStoryItem;
+// Memoize the component to prevent unnecessary re-renders
+export default memo(UserStoryItem, (prevProps, nextProps) => {
+  // Only re-render if these specific props change
+  return (
+    prevProps.story.id === nextProps.story.id &&
+    prevProps.story.hasUnseen === nextProps.story.hasUnseen &&
+    prevProps.story.seenStories === nextProps.story.seenStories &&
+    prevProps.isYourStory === nextProps.isYourStory &&
+    prevProps.story.stories.length === nextProps.story.stories.length
+  );
+});
