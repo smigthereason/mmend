@@ -1,9 +1,5 @@
+// types.ts
 // Types for our components
-export interface Story {
-  id: string;
-  name: string;
-  image: string;
-}
 
 export interface Message {
   id: string;
@@ -28,11 +24,9 @@ export interface Post {
   id: string;
   userId: string;
   userName: string;
-  username: string;
   userImage: string;
   title: string;
   content: string;
-  caption: string;
   category: 'Postpartum' | 'Breastfeeding' | 'Sleep' | 'Mental Health' | 'Recovery' | 'Support';
   likes: number;
   comments: number;
@@ -41,19 +35,14 @@ export interface Post {
   isSaved: boolean;
   tags: string[];
   timestamp: string;
-  time: string;
   readTime: string;
-  postImage: string;
+  postImage?: string;
 }
 
 export interface PostHeaderProps {
   username: string;
   userImage: string;
   time: string;
-}
-
-export interface StoryItemProps {
-  story: Story;
 }
 
 export interface PostItemProps {
@@ -81,4 +70,55 @@ export interface ChatInputProps {
   onChangeText: (text: string) => void;
   onSendPress: () => void;
   onContentSizeChange?: (event: any) => void;
+}
+
+// Story Types
+export interface StoryContent {
+  id: string;
+  type: 'image' | 'video';
+  url: string;
+  duration: number; // in seconds
+  seen: boolean;
+  postedAt: string;
+  text?: string; // optional text overlay
+}
+
+export interface UserStory {
+  id: string;
+  userId: string;
+  name: string;
+  image: string;
+  hasUnseen: boolean;
+  stories: StoryContent[];
+  seenStories: number; // how many stories have been seen
+}
+
+// For backward compatibility with existing code
+export type Story = UserStory;
+
+export interface UserStoryItemProps {
+  story: UserStory;
+  isFirst?: boolean;
+  onPress?: () => void;
+}
+
+export interface StoriesViewerProps {
+  stories: UserStory[];
+  initialIndex: number;
+  onClose: () => void;
+  onStorySeen: (userId: string, storyIndex: number) => void;
+}
+
+export interface StoryProgressBarProps {
+  index: number;
+  currentIndex: number;
+  totalStories: number;
+  storyDurations: number[];
+  paused: boolean;
+}
+
+export interface StoryHeaderProps {
+  user: UserStory;
+  currentTime: string;
+  onClose: () => void;
 }

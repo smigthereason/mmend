@@ -14,6 +14,7 @@ export interface Post {
   tags: string[];
   timestamp: string;
   readTime: string;
+  postImage?: string; // Added field for post image
 }
 
 export const postsData: Post[] = [
@@ -21,7 +22,7 @@ export const postsData: Post[] = [
     id: '1',
     userId: 'user1',
     userName: 'Sarah Johnson',
-    userImage: 'https://randomuser.me/api/portraits/women/32.jpg',
+    userImage: 'https://images.unsplash.com/photo-1496302912295-8d0451c184e2?q=80&w=876&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     title: 'My Journey Through Postpartum Depression',
     content: 'After my daughter was born, I expected to feel overwhelming joy. Instead, I felt empty and disconnected. For weeks, I couldn\'t understand why I was crying all the time or why I felt so distant from my own baby. It took me 3 months to realize I had postpartum depression. Reaching out for help was the hardest but best decision I ever made.',
     category: 'Postpartum',
@@ -32,7 +33,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['PPD', 'Recovery', 'MentalHealth'],
     timestamp: '2 hours ago',
-    readTime: '4 min read'
+    readTime: '4 min read',
+    postImage: 'https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '2',
@@ -49,7 +51,8 @@ export const postsData: Post[] = [
     isSaved: false,
     tags: ['Breastfeeding', 'Support', 'NewMom'],
     timestamp: '5 hours ago',
-    readTime: '3 min read'
+    readTime: '3 min read',
+    postImage: 'https://images.unsplash.com/photo-1548213238-0da752c5f5c5?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '3',
@@ -66,7 +69,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['Sleep', 'SelfCare', 'MentalHealth'],
     timestamp: '1 day ago',
-    readTime: '5 min read'
+    readTime: '5 min read',
+    postImage: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '4',
@@ -83,7 +87,8 @@ export const postsData: Post[] = [
     isSaved: false,
     tags: ['CSection', 'BodyImage', 'Recovery'],
     timestamp: '2 days ago',
-    readTime: '3 min read'
+    readTime: '3 min read',
+    postImage: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '5',
@@ -100,7 +105,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['MomGuilt', 'MentalHealth', 'SelfCare'],
     timestamp: '3 days ago',
-    readTime: '4 min read'
+    readTime: '4 min read',
+    postImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '6',
@@ -117,7 +123,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['SingleMom', 'Community', 'Support'],
     timestamp: '4 days ago',
-    readTime: '6 min read'
+    readTime: '6 min read',
+    postImage: 'https://images.unsplash.com/photo-1518384401463-d3876163c195?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '7',
@@ -134,7 +141,8 @@ export const postsData: Post[] = [
     isSaved: false,
     tags: ['BodyImage', 'Recovery', 'Support'],
     timestamp: '5 days ago',
-    readTime: '3 min read'
+    readTime: '3 min read',
+    postImage: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '8',
@@ -151,7 +159,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['Anxiety', 'PPA', 'MentalHealth'],
     timestamp: '1 week ago',
-    readTime: '4 min read'
+    readTime: '4 min read',
+    postImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '9',
@@ -168,7 +177,8 @@ export const postsData: Post[] = [
     isSaved: false,
     tags: ['PCOS', 'Breastfeeding', 'Challenges'],
     timestamp: '1 week ago',
-    readTime: '5 min read'
+    readTime: '5 min read',
+    postImage: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '10',
@@ -185,7 +195,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['Bonding', 'PPD', 'NewMom'],
     timestamp: '2 weeks ago',
-    readTime: '4 min read'
+    readTime: '4 min read',
+    postImage: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '11',
@@ -202,7 +213,8 @@ export const postsData: Post[] = [
     isSaved: false,
     tags: ['HairLoss', 'Recovery', 'SelfCare'],
     timestamp: '2 weeks ago',
-    readTime: '3 min read'
+    readTime: '3 min read',
+    postImage: 'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '12',
@@ -219,7 +231,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['WorkingMom', 'Support', 'Balance'],
     timestamp: '3 weeks ago',
-    readTime: '5 min read'
+    readTime: '5 min read',
+    postImage: 'https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '13',
@@ -236,7 +249,8 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['Twins', 'Survival', 'Support'],
     timestamp: '3 weeks ago',
-    readTime: '7 min read'
+    readTime: '7 min read',
+    postImage: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '14',
@@ -253,7 +267,8 @@ export const postsData: Post[] = [
     isSaved: false,
     tags: ['BirthTrauma', 'Recovery', 'CSection'],
     timestamp: '1 month ago',
-    readTime: '6 min read'
+    readTime: '6 min read',
+    postImage: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: '15',
@@ -270,6 +285,7 @@ export const postsData: Post[] = [
     isSaved: true,
     tags: ['Joy', 'Mindfulness', 'MentalHealth'],
     timestamp: '1 month ago',
-    readTime: '4 min read'
+    readTime: '4 min read',
+    postImage: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   }
 ];

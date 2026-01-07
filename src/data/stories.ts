@@ -1,61 +1,343 @@
-export interface Story {
-  id: string;
-  userId: string;
-  userName: string;
-  userImage: string;
-  title: string;
-  content: string;
-  challenge: string;
-  solution: string;
-  outcome: string;
-  advice: string;
-  tags: string[];
-  datePosted: string;
-  resources?: string[];
-  quote?: string;
-}
+// stories.ts
+import { UserStory } from "../components/shared/types";
 
-export const storiesData: Story[] = [
+export const storiesData: UserStory[] = [
   {
-    id: 'story1',
-    userId: 'user1',
-    userName: 'Sarah Johnson',
-    userImage: 'https://randomuser.me/api/portraits/women/32.jpg',
-    title: 'From Darkness to Light: My PPD Journey',
-    content: 'The first three months after Emma was born were the darkest of my life. I would sit in the nursery, holding my beautiful daughter, and feel absolutely nothing. The guilt was overwhelming - how could I not feel joy when I had this perfect little human?',
-    challenge: 'Severe postpartum depression, disconnection from baby, constant crying spells, feeling of worthlessness',
-    solution: 'Reached out to my OBGYN at 3 months postpartum, started therapy twice a week, joined a support group, began medication, and asked for help from family',
-    outcome: 'After 2 months of treatment, I started feeling glimmers of joy. At 6 months, I felt bonded with Emma. Today, we have the most beautiful relationship.',
-    advice: 'Don\'t wait to ask for help. The "baby blues" that lasts beyond 2 weeks is not normal. Your mental health matters as much as your physical health.',
-    tags: ['PPD', 'Recovery', 'Therapy', 'Medication'],
-    datePosted: 'March 15, 2024',
-    resources: [
-      'Postpartum Support International: 1-800-944-4773',
-      'Therapy apps: BetterHelp, TalkSpace',
-      'Book: "This Isn\'t What I Expected" by Karen Kleiman'
+    id: "0",
+    userId: "user0",
+    name: "Your Story",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    hasUnseen: false,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story0-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "Just now",
+      },
     ],
-    quote: '"Asking for help isn\'t weakness - it\'s the bravest thing a mother can do."'
   },
   {
-    id: 'story2',
-    userId: 'user2',
-    userName: 'Maria Rodriguez',
-    userImage: 'https://randomuser.me/api/portraits/women/44.jpg',
-    title: 'The Breastfeeding Battle I Almost Lost',
-    content: 'Every feeding session felt like torture. I dreaded my baby\'s hunger cues because I knew what was coming - excruciating pain, frustration, and feelings of inadequacy.',
-    challenge: 'Extreme pain during breastfeeding, cracked and bleeding nipples, low milk supply anxiety, pressure to continue',
-    solution: 'Hired a lactation consultant, switched to pumping temporarily to heal, used nipple shields, joined a breastfeeding support group online',
-    outcome: 'After 8 weeks of struggle, we found our rhythm. I was able to breastfeed for 14 months. The pain eventually became a distant memory.',
-    advice: 'Fed is best. Whether it\'s breast, bottle, or formula - what matters is that your baby is nourished and you\'re mentally healthy.',
-    tags: ['Breastfeeding', 'Pain', 'Support', 'Persistence'],
-    datePosted: 'February 28, 2024',
-    resources: [
-      'La Leche League International',
-      'KellyMom breastfeeding resources',
-      'Lactation consultants through insurance'
-    ]
+    id: "1",
+    userId: "user1",
+    name: "Sarah Johnson",
+    image: "https://images.unsplash.com/photo-1496302912295-8d0451c184e2?q=80&w=876&auto=format&fit=crop",
+    hasUnseen: true,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story1-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "2 hours ago",
+        text: "My postpartum journey",
+      },
+      {
+        id: "story1-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "4 hours ago",
+      },
+      {
+        id: "story1-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "5 hours ago",
+      },
+    ],
   },
-  // Add more stories...
+  {
+    id: "2",
+    userId: "user2",
+    name: "Maria Rodriguez",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    hasUnseen: true,
+    seenStories: 1,
+    stories: [
+      {
+        id: "story2-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1548213238-0da752c5f5c5?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "5 hours ago",
+      },
+      {
+        id: "story2-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "6 hours ago",
+        text: "Breastfeeding tips",
+      },
+      {
+        id: "story2-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "7 hours ago",
+      },
+    ],
+  },
+  {
+    id: "3",
+    userId: "user3",
+    name: "Jennifer Lee",
+    image: "https://randomuser.me/api/portraits/women/28.jpg",
+    hasUnseen: false,
+    seenStories: 2,
+    stories: [
+      {
+        id: "story3-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "8 hours ago",
+      },
+      {
+        id: "story3-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "9 hours ago",
+      },
+    ],
+  },
+  {
+    id: "4",
+    userId: "user4",
+    name: "Chloe Williams",
+    image: "https://randomuser.me/api/portraits/women/67.jpg",
+    hasUnseen: true,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story4-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "10 hours ago",
+      },
+      {
+        id: "story4-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "11 hours ago",
+      },
+      {
+        id: "story4-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "12 hours ago",
+      },
+      {
+        id: "story4-4",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "13 hours ago",
+      },
+    ],
+  },
+  {
+    id: "5",
+    userId: "user5",
+    name: "Amanda Chen",
+    image: "https://randomuser.me/api/portraits/women/55.jpg",
+    hasUnseen: false,
+    seenStories: 1,
+    stories: [
+      {
+        id: "story5-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1548213238-0da752c5f5c5?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "14 hours ago",
+      },
+      {
+        id: "story5-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "15 hours ago",
+      },
+    ],
+  },
+  {
+    id: "6",
+    userId: "user6",
+    name: "Fatima Hassan",
+    image: "https://randomuser.me/api/portraits/women/23.jpg",
+    hasUnseen: true,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story6-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "16 hours ago",
+        text: "Single mom life",
+      },
+    ],
+  },
+  {
+    id: "7",
+    userId: "user7",
+    name: "Rachel Kim",
+    image: "https://randomuser.me/api/portraits/women/71.jpg",
+    hasUnseen: true,
+    seenStories: 2,
+    stories: [
+      {
+        id: "story7-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "17 hours ago",
+      },
+      {
+        id: "story7-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "18 hours ago",
+      },
+      {
+        id: "story7-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "19 hours ago",
+      },
+    ],
+  },
+  {
+    id: "8",
+    userId: "user8",
+    name: "Isabella Martinez",
+    image: "https://randomuser.me/api/portraits/women/33.jpg",
+    hasUnseen: false,
+    seenStories: 3,
+    stories: [
+      {
+        id: "story8-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1548213238-0da752c5f5c5?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "20 hours ago",
+      },
+      {
+        id: "story8-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "21 hours ago",
+      },
+      {
+        id: "story8-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "22 hours ago",
+      },
+      {
+        id: "story8-4",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "23 hours ago",
+      },
+    ],
+  },
+  {
+    id: "9",
+    userId: "user9",
+    name: "Sophia Wilson",
+    image: "https://randomuser.me/api/portraits/women/29.jpg",
+    hasUnseen: true,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story9-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "1 day ago",
+        text: "PCOS & motherhood",
+      },
+      {
+        id: "story9-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "1 day ago",
+      },
+    ],
+  },
+  {
+    id: "10",
+    userId: "user10",
+    name: "Emma Thompson",
+    image: "https://randomuser.me/api/portraits/women/45.jpg",
+    hasUnseen: true,
+    seenStories: 1,
+    stories: [
+      {
+        id: "story10-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=860&auto=format&fit=crop",
+        duration: 5,
+        seen: true,
+        postedAt: "2 days ago",
+      },
+      {
+        id: "story10-2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1548213238-0da752c5f5c5?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "2 days ago",
+      },
+      {
+        id: "story10-3",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "2 days ago",
+      },
+    ],
+  },
 ];
-
-// Extended version with all 15 stories (truncated for brevity here)

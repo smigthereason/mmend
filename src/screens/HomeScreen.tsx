@@ -1,52 +1,65 @@
+// Update HomeScreen.tsx
 import React, { useState, useEffect } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Header from "../components/home/Header";
-import StoryList from "../components/home/StoryList";
+import StoryList from "../components/stories/StoryList"; // Updated import
 import PostList from "../components/home/PostList";
-import { Story, Post } from "../components/shared/types";
+import { UserStory, Post } from "../components/shared/types";
 import { postsData } from "../data/posts";
 import { useTheme } from "../context/ThemeContext";
 
-const HomeScreen: React.FC = () => {
+// Sample stories data
+const sampleStories: UserStory[] = [
+  {
+    id: "0",
+    userId: "user0",
+    name: "Your Story",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    hasUnseen: false,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story0-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=870&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "Just now",
+      },
+    ],
+  },
+  {
+    id: "1",
+    userId: "user1",
+    name: "Sarah Johnson",
+    image: "https://images.unsplash.com/photo-1496302912295-8d0451c184e2?q=80&w=876&auto=format&fit=crop",
+    hasUnseen: true,
+    seenStories: 0,
+    stories: [
+      {
+        id: "story1-1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1584697964401-a8e6c6d93d2d?q=80&w=774&auto=format&fit=crop",
+        duration: 5,
+        seen: false,
+        postedAt: "2 hours ago",
+      },
+    ],
+  },
+  // Add more stories...
+];
+
+interface HomeScreenProps {
+  navigation?: any; // Add navigation prop
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { colors } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
-  const [stories, setStories] = useState<Story[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [stories, setStories] = useState<UserStory[]>(sampleStories);
+  const [posts, setPosts] = useState<Post[]>(postsData);
   const [points, setPoints] = useState(1578);
-
-  // Convert sample posts to match PostItem format
-  const convertToPostItemFormat = (postData: Post[]) => {
-    return postData.map(post => ({
-      id: post.id,
-      username: post.userName,
-      userImage: post.userImage,
-      postImage: `https://images.unsplash.com/photo-1518568814500-bf0f8d125f${Math.floor(Math.random() * 100)}`, // Random image
-      likes: post.likes,
-      caption: `${post.title}\n\n${post.content.substring(0, 150)}...`,
-      comments: post.comments,
-      time: post.timestamp,
-    }));
-  };
-
-  // Create stories from recent posts
-  const createStoriesFromPosts = (postData: Post[]) => {
-    const uniqueUsers = postData.slice(0, 5).map((post, index) => ({
-      id: `story-${post.id}`,
-      name: post.userName,
-      image: post.userImage,
-    }));
-
-    // Add "Your Story" at the beginning
-    return [
-      {
-        id: "0",
-        name: "Your Story",
-        image: "https://randomuser.me/api/portraits/women/44.jpg", // Default user image
-      },
-      ...uniqueUsers
-    ];
-  };
 
   useEffect(() => {
     loadData();
@@ -54,30 +67,34 @@ const HomeScreen: React.FC = () => {
 
   const loadData = () => {
     // Set posts from sample data
-    const convertedPosts = convertToPostItemFormat(postsData.slice(0, 5));
-    setPosts(convertedPosts);
-    
-    // Create stories from posts
-    const storyData = createStoriesFromPosts(postsData);
-    setStories(storyData);
+    setPosts(postsData);
+    // Set stories from sample data
+    setStories(sampleStories);
   };
 
   const handleRefresh = () => {
     setRefreshing(true);
-    // Simulate API call
     setTimeout(() => {
       loadData();
       setRefreshing(false);
-      // Add some points for refreshing
       setPoints(prev => prev + 10);
     }, 1000);
   };
 
   const handleAddPress = () => {
-    console.log("Add button pressed - would navigate to create post screen");
-    // Add points for posting
+    console.log("Add button pressed");
     setPoints(prev => prev + 50);
   };
+
+  const handleAddStory = () => {
+    console.log("Add story pressed");
+    // Navigate to create story screen or camera
+  };
+
+  const handleStoryPress = (index: number) => {
+  // Navigate to StoriesScreen
+  navigation?.navigate("Stories", { initialIndex: index });
+};
 
   const styles = StyleSheet.create({
     container: {
@@ -87,28 +104,29 @@ const HomeScreen: React.FC = () => {
     safeArea: {
       backgroundColor: colors.surface,
     },
-    storyListContainer: {
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-      backgroundColor: colors.surface,
-    },
   });
 
   return (
     <SafeAreaProvider>
       <View style={styles.container}>
         <SafeAreaView style={styles.safeArea} edges={["top"]}>
-          <Header onAddPress={handleAddPress} points={points} />
+          <Header 
+            onAddPress={handleAddPress} 
+            points={points} 
+            onStoryPress={handleAddStory}
+          />
         </SafeAreaView>
 
-        <View style={styles.storyListContainer}>
-          <StoryList stories={stories} />
-        </View>
+        <StoryList 
+          stories={stories} 
+          onStoryPress={handleStoryPress}
+        />
         
         <PostList
           posts={posts}
           onRefresh={handleRefresh}
           refreshing={refreshing}
+          emptyMessage="No posts yet. Be the first to share your story!"
         />
       </View>
     </SafeAreaProvider>

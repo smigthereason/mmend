@@ -9,15 +9,38 @@ import {
   Image,
   ScrollView,
   StatusBar,
+  ListRenderItemInfo,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { specialistsData } from "../data/specialists";
 import { useTheme } from "../context/ThemeContext";
 
+// Define types for specialist data
+interface Specialist {
+  id: string;
+  name: string;
+  title: string;
+  image: string;
+  rating: number;
+  reviewCount: number;
+  tier: "Gold" | "Silver" | "Bronze";
+  specialty: string;
+  experience: string;
+  languages: string[];
+  available: boolean;
+  nextAvailable: string;
+  consultationFee: number;
+}
+
+// Define the render item parameter type
+type RenderSpecialistProps = {
+  item: Specialist;
+};
+
 const ConsultScreen: React.FC = () => {
   const { colors } = useTheme();
-  const [points, setPoints] = useState(1578);
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [points, setPoints] = useState<number>(1578);
+  const [selectedFilter, setSelectedFilter] = useState<string>("All");
 
   const handleAddPress = () => {
     console.log("Add points pressed");
@@ -26,13 +49,13 @@ const ConsultScreen: React.FC = () => {
 
   const filters = ["All", "Gold", "Silver", "Bronze", "Available"];
 
-  const filteredSpecialists = specialistsData.filter(specialist => {
+  const filteredSpecialists = specialistsData.filter((specialist: Specialist) => {
     if (selectedFilter === "All") return true;
     if (selectedFilter === "Available") return specialist.available;
     return specialist.tier === selectedFilter;
   });
 
-  const renderSpecialist = ({ item }) => (
+  const renderSpecialist = ({ item }: ListRenderItemInfo<Specialist>) => (
     <TouchableOpacity style={styles.specialistCard}>
       <View style={styles.specialistHeader}>
         <Image source={{ uri: item.image }} style={styles.specialistImage} />
@@ -46,7 +69,10 @@ const ConsultScreen: React.FC = () => {
             </Text>
           </View>
         </View>
-        <View style={[styles.tierBadge, styles[`${item.tier.toLowerCase()}Tier`]]}>
+        <View style={[
+          styles.tierBadge, 
+          styles[`${item.tier.toLowerCase()}Tier` as keyof typeof styles]
+        ]}>
           <Text style={styles.tierText}>{item.tier}</Text>
         </View>
       </View>
@@ -114,7 +140,7 @@ const ConsultScreen: React.FC = () => {
     headerPoints: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: colors.primary + "20",
+      backgroundColor: `${colors.primary}20`,
       paddingHorizontal: 12,
       paddingVertical: 6,
       borderRadius: 20,
@@ -349,9 +375,12 @@ const ConsultScreen: React.FC = () => {
     },
   });
 
+  // Get the bar style based on the theme
+  const barStyle = colors.isDark ? "light-content" : "dark-content";
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={colors.isDark ? "light-content" : "dark-content"} backgroundColor={colors.surface} />
+      <StatusBar barStyle={barStyle} backgroundColor={colors.surface} />
       
       {/* Custom Header - Title aligned to left */}
       <View style={styles.customHeader}>
@@ -409,7 +438,7 @@ const ConsultScreen: React.FC = () => {
           <FlatList
             data={filteredSpecialists}
             renderItem={renderSpecialist}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item: Specialist) => item.id}
             scrollEnabled={false}
             contentContainerStyle={styles.listContent}
             ListEmptyComponent={

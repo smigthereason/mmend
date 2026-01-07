@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontWeight: "bold",
+    fontSize: 16,
   },
   postTime: {
     fontSize: 12,
